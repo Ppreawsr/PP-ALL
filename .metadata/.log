@@ -1109,3 +1109,36 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\ppreaws
 
 !ENTRY org.eclipse.cdt.core 1 0 2024-05-15 13:50:17.432
 !MESSAGE Indexed 'MODBUS2024ALT' (25 sources, 153 headers) in 12 sec: 17,260 declarations; 82,987 references; 8 unresolved inclusions; 78 syntax errors; 1,555 unresolved names (1.5%)
+
+!ENTRY org.eclipse.core.jobs 2 2 2024-05-15 15:36:40.852
+!MESSAGE Job found still running after platform shutdown.  Jobs should be canceled by the plugin that scheduled them during shutdown: org.eclipse.cdt.dsf.gdb.internal.ui.console.GdbBasicCliConsole$InputReadJob
+!SESSION 2567-05-19 23:19:05.028 -----------------------------------------------
+eclipse.buildId=Version 1.15.1
+java.version=17.0.8.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2567-05-19 23:19:12.218
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2567-05-19 23:19:12.232
+!MESSAGE Log4j2 initialized with config file C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2567-05-19 23:19:21.191
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2567-05-20 12:03:09.144 -----------------------------------------------
+eclipse.buildId=Version 1.15.1
+java.version=17.0.8.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2567-05-20 12:03:52.558
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2567-05-20 12:03:52.589
+!MESSAGE Log4j2 initialized with config file C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2567-05-20 12:04:11.988
+!MESSAGE Started RMI Server, listening on port 41337

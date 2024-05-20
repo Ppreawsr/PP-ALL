@@ -44,16 +44,20 @@
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
+TIM_HandleTypeDef htim5; // modbus
+TIM_HandleTypeDef htim16;
 DMA_HandleTypeDef hdma_tim3_ch2;
 
 UART_HandleTypeDef huart1;
-UART_HandleTypeDef huart2;
+UART_HandleTypeDef huart2; // modbus
 DMA_HandleTypeDef hdma_usart1_rx;
 DMA_HandleTypeDef hdma_usart2_rx;
+DMA_HandleTypeDef hdma_usart2_tx;
 
 /* USER CODE BEGIN PV */
+////*JOYSTICK PART
 // @User: Joystick receiving buffer
-uint8_t joystickPayload [10] = {0};
+uint8_t joystickPayload[10] = {0};
 
 // @User: Encoder's raw angle from QEI
 uint32_t qeiRaw = 0;
@@ -64,6 +68,23 @@ uint32_t qeiRaw = 0;
 // @User: Motor's parameter
 volatile uint8_t zStop = 0;
 
+///*MODBUS PART
+ModbusHandleTypedef hmodbus;
+
+uint8_t vacuum;
+uint8_t gripper;
+uint8_t reed;
+
+u16u8_t registerFrame[200]; //middle between base n z axis (they will see the same.)
+uint16_t shelfPos[5];
+uint16_t piingpong;
+uint16_t setPos;
+
+uint16_t temPick; // temporary shelves order
+uint16_t temPlace;
+uint16_t pick[5]; // shelves order array
+uint16_t place[5];
+uint8_t round; // jog counter
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -75,6 +96,8 @@ static void MX_USART2_UART_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
+static void MX_TIM5_Init(void);
+static void MX_TIM16_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -90,6 +113,7 @@ static void MX_TIM3_Init(void);
   */
 int main(void)
 {
+
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -118,13 +142,27 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
+  MX_TIM5_Init(); //modbus
+  MX_TIM16_Init(); //modbus
   /* USER CODE BEGIN 2 */
 
   // @User: Setup UART 1 for communication with joy stick
   HAL_UART_Receive_DMA(&huart1, joystickPayload, 10);
 
   // @User: Setup UART 2 for communication with Base system
+  HAL_TIM_Base_Start_IT(&htim5); //open Timer 5 (interrupt)
+  hmodbus.huart = &huart2;
+  hmodbus.htim = &htim16;
+  hmodbus.slaveAddress = 0x15;
+  hmodbus.RegisterSize =200;
+  Modbus_init(&hmodbus, registerFrame);
+  reed = 0;
 
+  shelfPos[0] = 1;
+  shelfPos[1] = 2;
+  shelfPos[2] = 3;
+  shelfPos[3] = 4;
+  shelfPos[4] = 5;
 
   // @User: Setup Timer 1 for Motor drive
   HAL_TIM_Base_Start(&htim1);
@@ -155,6 +193,138 @@ int main(void)
 
 	  // TODO: Test encoder QEI, remove later
 	  qeiRaw = __HAL_TIM_GET_COUNTER(&htim2);
+
+	  ///*MODBUS PART
+	  Modbus_Protocal_Worker();
+
+	  vacuum = registerFrame[0x02].U16;
+	 	  gripper = registerFrame[0x03].U16;
+	 	  registerFrame[0x04].U16 = reed;
+
+	 	  static uint16_t timestamp = 0;
+	 	  //Set shelves
+	 	  if(registerFrame[0x01].U16 == 1)
+	 	  {
+	 		  registerFrame[0x01].U16 = 0;
+	 		  registerFrame[0x10].U16 = 1;
+	 		  registerFrame[0x23].U16 = shelfPos[0];
+	 		  registerFrame[0x24].U16 = shelfPos[1];
+	 		  registerFrame[0x25].U16 = shelfPos[2];
+	 		  registerFrame[0x26].U16 = shelfPos[3];
+	 		  registerFrame[0x27].U16 = shelfPos[4];
+	 		  //delay 2000ms
+	 		  timestamp = HAL_GetTick()+2000;
+	 	  }
+	 	  if(HAL_GetTick() >= timestamp && (registerFrame[0x10].U16 == 1))
+	 	  {
+	 		  registerFrame[0x10].U16 = 0;
+	 	  }
+	 	  //Home
+	 	  if(registerFrame[0x01].U16 == 2)
+	 	  {
+	 		  registerFrame[0x01].U16 = 0;
+	 		  registerFrame[0x10].U16 = 2;
+	 		  setPos =  shelfPos[0];
+	 	  }
+	 	  //point mode
+	 	  if(registerFrame[0x01].U16 == 8)
+	 	  {
+	 		  registerFrame[0x01].U16 = 0;
+	 		  registerFrame[0x10].U16 = 16;
+	 		  setPos =  registerFrame[0x30].U16;
+	 	  }
+	 	  //reset
+	 	  if(piingpong == 1 && (registerFrame[0x10].U16 == 2 || registerFrame[0x10].U16 == 16) )//check piingpong status
+	 	  {
+	 		  registerFrame[0x10].U16 = 0;
+	 	  }
+	 	  //jog mode
+	 	  if((registerFrame[0x01].U16 == 4))
+	 	  {
+	 		  registerFrame[0x01].U16 = 0; //reset status
+
+	 	      temPick = (registerFrame[0x21].U16);
+	 	      temPlace = (registerFrame[0x22].U16);
+	 	      round = 0;
+	 	      ////// Convert to string
+	 	      for(uint16_t i = 10000;i>=1;i/=10)
+	 	      {
+	 	    	  if(temPick/i == 0 || temPick/i > 5 || temPlace/i == 0 || temPlace/i > 5) // check if 0 or > 5
+	 	    	  {
+	 	    		  round = 0;
+	 	    		  break;
+	 	    	  }
+	 	    	  pick[round] = temPick/i; // use this for pick
+	 	    	  place[round] = temPlace/i; // use this for place
+	 	    	  temPick = temPick%i;
+	 	    	  temPlace = temPlace%i;
+	 	    	  round++;
+	 	      }
+	 	  }
+	 	  else if(round > 0) //  run Jog
+	 	  	{
+	 	  		if(registerFrame[0x10].U16 == 0 && round == 5 && gripper == 0 && reed == 1 && vacuum == 0) // first rev
+	 	  		{
+	 	  			(registerFrame[0x10].U16) = 4; // Z-go pick
+	 	  			setPos = shelfPos[pick[5-round]-1];
+	 	  		}
+	 	  		if((piingpong && registerFrame[0x10].U16 == 8)) // prev mode: place, do pick
+	 	  		{
+	 	  			///////place down
+
+	 	  			if(reed != 2){
+	 	  				registerFrame[0x03].U16 = 1; // gripper forward
+	 	  			}
+	 	  			else //reached
+	 	  			{
+	 	  				registerFrame[0x02].U16 = 0; //vacuum off
+	 	  					//Delay a few sec
+	 	  				registerFrame[0x03].U16 = 0; //gripper backward
+	 	  			}
+	 	  			///////finish place -> move on
+	 	  			if(gripper == 0 && reed == 1 && vacuum == 0)
+	 	  			{
+	 	  				round--;
+	 	  				if(round>0)
+	 	  				{
+	 	  					(registerFrame[0x10].U16) = 4; // Z-go pick
+	 	  					setPos = shelfPos[pick[5-round]-1];
+	 	  				}
+	 	  				else
+	 	  				{
+	 	  					(registerFrame[0x10].U16 = 0); // End Jogs
+	 	  				}
+	 	  			}
+	 	  			//MoveTosetPos();
+	 	  		}
+	 	  		else if(piingpong && registerFrame[0x10].U16 == 4)// prev mode: pick, do place
+	 	  		{
+	 	  			//////pick up
+	 	  			if(reed != 2)
+	 	  			{
+	 	  				registerFrame[0x03].U16 = 1; //gripper forward
+	 	  			}
+	 	  			else
+	 	  			{
+	 	  				registerFrame[0x02].U16 = 1; //vacuum on
+	 	  				// Delay a few sec
+	 	  				registerFrame[0x03].U16 = 0; //gripper backward
+	 	  			}
+	 	  			///////finish pick -> move on
+	 	  			if(gripper == 0 && reed == 1 && vacuum == 1)
+	 	  			{
+	 	  				(registerFrame[0x10].U16) = 8; // Z-go place
+	 	  				setPos = shelfPos[place[5-round]-1];
+	 	  			}
+	 	  		}
+
+	 	  	}
+
+	 	  	else if(piingpong && (registerFrame[0x10].U16 == 2 || registerFrame[0x10].U16 == 16))
+	 	  	{
+	 	  		//finish point & home mode
+	 	  		registerFrame[0x10].U16 = 0;
+	 	  	}
   }
   /* USER CODE END 3 */
 }
@@ -408,6 +578,87 @@ static void MX_TIM3_Init(void)
 }
 
 /**
+  * @brief TIM5 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM5_Init(void)
+{
+
+  /* USER CODE BEGIN TIM5_Init 0 */
+
+  /* USER CODE END TIM5_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM5_Init 1 */
+
+  /* USER CODE END TIM5_Init 1 */
+  htim5.Instance = TIM5;
+  htim5.Init.Prescaler = 16999;
+  htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim5.Init.Period = 1999;
+  htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim5.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim5) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim5, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim5, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM5_Init 2 */
+
+  /* USER CODE END TIM5_Init 2 */
+
+}
+
+/**
+  * @brief TIM16 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM16_Init(void)
+{
+
+  /* USER CODE BEGIN TIM16_Init 0 */
+
+  /* USER CODE END TIM16_Init 0 */
+
+  /* USER CODE BEGIN TIM16_Init 1 */
+
+  /* USER CODE END TIM16_Init 1 */
+  htim16.Instance = TIM16;
+  htim16.Init.Prescaler = 169;
+  htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim16.Init.Period = 1145;
+  htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim16.Init.RepetitionCounter = 0;
+  htim16.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim16) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_OnePulse_Init(&htim16, TIM_OPMODE_SINGLE) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM16_Init 2 */
+
+  /* USER CODE END TIM16_Init 2 */
+
+}
+
+/**
   * @brief USART1 Initialization Function
   * @param None
   * @retval None
@@ -471,10 +722,10 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 115200;
-  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.BaudRate = 19200;
+  huart2.Init.WordLength = UART_WORDLENGTH_9B;
   huart2.Init.StopBits = UART_STOPBITS_1;
-  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Parity = UART_PARITY_EVEN;
   huart2.Init.Mode = UART_MODE_TX_RX;
   huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
   huart2.Init.OverSampling = UART_OVERSAMPLING_16;
@@ -512,6 +763,7 @@ static void MX_DMA_Init(void)
   /* DMA controller clock enable */
   __HAL_RCC_DMAMUX1_CLK_ENABLE();
   __HAL_RCC_DMA1_CLK_ENABLE();
+  __HAL_RCC_DMA2_CLK_ENABLE();
 
   /* DMA interrupt init */
   /* DMA1_Channel1_IRQn interrupt configuration */
@@ -523,6 +775,9 @@ static void MX_DMA_Init(void)
   /* DMA1_Channel3_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Channel3_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel3_IRQn);
+  /* DMA2_Channel2_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Channel2_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Channel2_IRQn);
 
 }
 
@@ -631,7 +886,6 @@ void serviceMotor(uint32_t pwm, uint8_t dir){
 	}
 }
 
-
 /* 	@User : Get encoder value
  *
  * 	Function: getEncoderValue
@@ -699,7 +953,17 @@ void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
 	}
 
 }
+
+//Callback -> Timer finish
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+	if(htim == &htim5)
+	{
+		registerFrame[0x00].U16 = 22881; //send "Ya"
+	}
+
+}
 /* USER CODE END 4 */
+
 
 /**
   * @brief  This function is executed in case of error occurrence.
