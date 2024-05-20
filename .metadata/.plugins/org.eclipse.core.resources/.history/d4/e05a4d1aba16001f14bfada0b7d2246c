@@ -116,7 +116,6 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM16_Init();
   MX_TIM5_Init();
-
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim5); //open Timer 5 (interrupt)
   hmodbus.huart = &huart2;
