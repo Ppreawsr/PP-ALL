@@ -772,3 +772,1157 @@ Finished building: default.size.stdout
  
 Finished building: MainController.list
  
+13:41:52 **** Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc "../Core/Src/stm32g4xx_hal_msp.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32g4xx_hal_msp.d" -MT"Core/Src/stm32g4xx_hal_msp.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32g4xx_hal_msp.o"
+arm-none-eabi-gcc "../Core/Src/stm32g4xx_it.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32g4xx_it.d" -MT"Core/Src/stm32g4xx_it.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32g4xx_it.o"
+arm-none-eabi-gcc "../Core/Src/subroutine.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/subroutine.d" -MT"Core/Src/subroutine.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/subroutine.o"
+../Core/Src/subroutine.c: In function 'updateLED':
+../Core/Src/main.c:87:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   87 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/subroutine.c:82:51: warning: passing argument 3 of 'HAL_TIM_PWM_Start_DMA' from incompatible pointer type [-Wincompatible-pointer-types]
+   82 |         return HAL_TIM_PWM_Start_DMA(htim, timCH, ledPayload, 132);
+      |                                                   ^~~~~~~~~~
+      |                                                   |
+      |                                                   uint16_t * {aka short unsigned int *}
+In file included from ../Core/Inc/stm32g4xx_hal_conf.h:344,
+                 from ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/subroutine.c:10:
+../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h:2402:100: note: expected 'const uint32_t *' {aka 'const long unsigned int *'} but argument is of type 'uint16_t *' {aka 'short unsigned int *'}
+ 2402 | HAL_StatusTypeDef HAL_TIM_PWM_Start_DMA(TIM_HandleTypeDef *htim, uint32_t Channel, const uint32_t *pData,
+      |                                                                                    ~~~~~~~~~~~~~~~~^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:184:11: warning: unused variable 'result' [-Wunused-variable]
+  184 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+../Core/Src/main.c: In function 'BaseAction':
+../Core/Src/main.c:868:24: error: 'r1_state' undeclared (first use in this function)
+  868 |                 reed = r1_state + 2 * r2_state;
+      |                        ^~~~~~~~
+../Core/Src/main.c:868:24: note: each undeclared identifier is reported only once for each function it appears in
+../Core/Src/main.c:868:39: error: 'r2_state' undeclared (first use in this function)
+  868 |                 reed = r1_state + 2 * r2_state;
+      |                                       ^~~~~~~~
+../Core/Src/main.c:873:17: warning: implicit declaration of function 'gripperEvent' [-Wimplicit-function-declaration]
+  873 |                 gripperEvent();
+      |                 ^~~~~~~~~~~~
+../Core/Src/main.c:875:54: error: 'linear_position' undeclared (first use in this function)
+  875 |                 registerFrame[0x11].U16 = (uint16_t)(linear_position * 10); //Position
+      |                                                      ^~~~~~~~~~~~~~~
+../Core/Src/main.c:876:54: error: 'linear_velocity' undeclared (first use in this function)
+  876 |                 registerFrame[0x12].U16 = (uint16_t)(linear_velocity * 10); //Velocity
+      |                                                      ^~~~~~~~~~~~~~~
+../Core/Src/main.c:877:54: error: 'linear_accel' undeclared (first use in this function)
+  877 |                 registerFrame[0x13].U16 = (uint16_t)(linear_accel * 10) ; //Acceleration
+      |                                                      ^~~~~~~~~~~~
+../Core/Src/main.c:878:43: error: 'x_pos' undeclared (first use in this function)
+  878 |                 registerFrame[0x40].U16 = x_pos; // X-axis Position
+      |                                           ^~~~~
+../Core/Src/main.c:887:53: error: 'shelvePos' undeclared (first use in this function); did you mean 'shelfPos'?
+  887 |                         (registerFrame[0x23].U16) = shelvePos[0];
+      |                                                     ^~~~~~~~~
+      |                                                     shelfPos
+../Core/Src/main.c:900:25: error: 'Goal' undeclared (first use in this function)
+  900 |                         Goal = shelvePos[0]; // set goal to home
+      |                         ^~~~
+../Core/Src/main.c:915:25: error: 'orderPick' undeclared (first use in this function)
+  915 |                         orderPick = (registerFrame[0x21].U16);
+      |                         ^~~~~~~~~
+../Core/Src/main.c:916:25: error: 'orderPlace' undeclared (first use in this function); did you mean 'temPlace'?
+  916 |                         orderPlace = (registerFrame[0x22].U16);
+      |                         ^~~~~~~~~~
+      |                         temPlace
+../Core/Src/main.c:920:25: error: 'j' undeclared (first use in this function)
+  920 |                 else if(j > 0)
+      |                         ^
+../Core/Src/main.c:924:33: error: 'mode' undeclared (first use in this function)
+  924 |                                 mode = 0; // for debug
+      |                                 ^~~~
+../Core/Src/main.c:928:29: error: 'flagPID' undeclared (first use in this function)
+  928 |                         if((flagPID && registerFrame[0x10].U16 == 8)) // prev mode: place, do pick
+      |                             ^~~~~~~
+../Core/Src/main.c:988:28: error: 'jj' undeclared (first use in this function)
+  988 |                         if(jj == 0){
+      |                            ^~
+../Core/Src/main.c: In function 'OrderSeparate':
+../Core/Src/main.c:1002:1: error: 'j' undeclared (first use in this function)
+ 1002 | j = 0;
+      | ^
+../Core/Src/main.c:1006:4: error: 'orderPick' undeclared (first use in this function)
+ 1006 | if(orderPick/i <= 0 || orderPick/i > 5 || orderPlace/i <= 0 || orderPlace/i > 5) // check if 0 or > 5
+      |    ^~~~~~~~~
+../Core/Src/main.c:1006:43: error: 'orderPlace' undeclared (first use in this function); did you mean 'temPlace'?
+ 1006 | if(orderPick/i <= 0 || orderPick/i > 5 || orderPlace/i <= 0 || orderPlace/i > 5) // check if 0 or > 5
+      |                                           ^~~~~~~~~~
+      |                                           temPlace
+../Core/Src/main.c:1009:1: error: 'mode' undeclared (first use in this function)
+ 1009 | mode = 100;
+      | ^~~~
+make: *** [Core/Src/subdir.mk:40: Core/Src/main.o] Error 1
+make: *** Waiting for unfinished jobs....
+"make -j8 all" terminated with exit code 2. Build might be incomplete.
+13:48:40 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:189:11: warning: unused variable 'result' [-Wunused-variable]
+  189 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+../Core/Src/main.c: In function 'BaseAction':
+../Core/Src/main.c:873:24: error: 'r1_state' undeclared (first use in this function)
+  873 |                 reed = r1_state + 2 * r2_state;
+      |                        ^~~~~~~~
+../Core/Src/main.c:873:24: note: each undeclared identifier is reported only once for each function it appears in
+../Core/Src/main.c:873:39: error: 'r2_state' undeclared (first use in this function)
+  873 |                 reed = r1_state + 2 * r2_state;
+      |                                       ^~~~~~~~
+../Core/Src/main.c:878:17: warning: implicit declaration of function 'gripperEvent' [-Wimplicit-function-declaration]
+  878 |                 gripperEvent();
+      |                 ^~~~~~~~~~~~
+../Core/Src/main.c:882:54: error: 'linear_accel' undeclared (first use in this function)
+  882 |                 registerFrame[0x13].U16 = (uint16_t)(linear_accel * 10) ; //Acceleration
+      |                                                      ^~~~~~~~~~~~
+../Core/Src/main.c:883:43: error: 'x_pos' undeclared (first use in this function)
+  883 |                 registerFrame[0x40].U16 = x_pos; // X-axis Position
+      |                                           ^~~~~
+../Core/Src/main.c:905:25: error: 'Goal' undeclared (first use in this function); did you mean 'goal'?
+  905 |                         Goal = shelfPos[0]; // set goal to home
+      |                         ^~~~
+      |                         goal
+../Core/Src/main.c:920:25: error: 'orderPick' undeclared (first use in this function)
+  920 |                         orderPick = (registerFrame[0x21].U16);
+      |                         ^~~~~~~~~
+../Core/Src/main.c:921:25: error: 'orderPlace' undeclared (first use in this function); did you mean 'temPlace'?
+  921 |                         orderPlace = (registerFrame[0x22].U16);
+      |                         ^~~~~~~~~~
+      |                         temPlace
+../Core/Src/main.c:925:25: error: 'j' undeclared (first use in this function)
+  925 |                 else if(j > 0)
+      |                         ^
+../Core/Src/main.c:929:33: error: 'mode' undeclared (first use in this function)
+  929 |                                 mode = 0; // for debug
+      |                                 ^~~~
+../Core/Src/main.c:933:29: error: 'flagPID' undeclared (first use in this function)
+  933 |                         if((flagPID && registerFrame[0x10].U16 == 8)) // prev mode: place, do pick
+      |                             ^~~~~~~
+../Core/Src/main.c:993:28: error: 'rnd2' undeclared (first use in this function); did you mean 'rnd'?
+  993 |                         if(rnd2 == 0){
+      |                            ^~~~
+      |                            rnd
+../Core/Src/main.c: In function 'OrderSeparate':
+../Core/Src/main.c:1007:1: error: 'j' undeclared (first use in this function)
+ 1007 | j = 0;
+      | ^
+../Core/Src/main.c:1011:4: error: 'orderPick' undeclared (first use in this function)
+ 1011 | if(orderPick/i <= 0 || orderPick/i > 5 || orderPlace/i <= 0 || orderPlace/i > 5) // check if 0 or > 5
+      |    ^~~~~~~~~
+../Core/Src/main.c:1011:43: error: 'orderPlace' undeclared (first use in this function); did you mean 'temPlace'?
+ 1011 | if(orderPick/i <= 0 || orderPick/i > 5 || orderPlace/i <= 0 || orderPlace/i > 5) // check if 0 or > 5
+      |                                           ^~~~~~~~~~
+      |                                           temPlace
+../Core/Src/main.c:1014:1: error: 'mode' undeclared (first use in this function)
+ 1014 | mode = 100;
+      | ^~~~
+make: *** [Core/Src/subdir.mk:40: Core/Src/main.o] Error 1
+"make -j8 all" terminated with exit code 2. Build might be incomplete.
+13:50:40 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:191:11: warning: unused variable 'result' [-Wunused-variable]
+  191 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+../Core/Src/main.c: In function 'BaseAction':
+../Core/Src/main.c:880:17: warning: implicit declaration of function 'gripperEvent' [-Wimplicit-function-declaration]
+  880 |                 gripperEvent();
+      |                 ^~~~~~~~~~~~
+../Core/Src/main.c:884:54: error: 'linear_accel' undeclared (first use in this function)
+  884 |                 registerFrame[0x13].U16 = (uint16_t)(linear_accel * 10) ; //Acceleration
+      |                                                      ^~~~~~~~~~~~
+../Core/Src/main.c:884:54: note: each undeclared identifier is reported only once for each function it appears in
+../Core/Src/main.c:885:43: error: 'x_pos' undeclared (first use in this function)
+  885 |                 registerFrame[0x40].U16 = x_pos; // X-axis Position
+      |                                           ^~~~~
+../Core/Src/main.c:907:25: error: 'Goal' undeclared (first use in this function); did you mean 'goal'?
+  907 |                         Goal = shelfPos[0]; // set goal to home
+      |                         ^~~~
+      |                         goal
+../Core/Src/main.c:922:25: error: 'orderPick' undeclared (first use in this function)
+  922 |                         orderPick = (registerFrame[0x21].U16);
+      |                         ^~~~~~~~~
+../Core/Src/main.c:923:25: error: 'orderPlace' undeclared (first use in this function); did you mean 'temPlace'?
+  923 |                         orderPlace = (registerFrame[0x22].U16);
+      |                         ^~~~~~~~~~
+      |                         temPlace
+../Core/Src/main.c:927:25: error: 'j' undeclared (first use in this function)
+  927 |                 else if(j > 0)
+      |                         ^
+../Core/Src/main.c:931:33: error: 'mode' undeclared (first use in this function)
+  931 |                                 mode = 0; // for debug
+      |                                 ^~~~
+../Core/Src/main.c:935:29: error: 'flagPID' undeclared (first use in this function)
+  935 |                         if((flagPID && registerFrame[0x10].U16 == 8)) // prev mode: place, do pick
+      |                             ^~~~~~~
+../Core/Src/main.c:995:28: error: 'rnd2' undeclared (first use in this function); did you mean 'rnd'?
+  995 |                         if(rnd2 == 0){
+      |                            ^~~~
+      |                            rnd
+../Core/Src/main.c: In function 'OrderSeparate':
+../Core/Src/main.c:1019:1: error: expected declaration specifiers before 'pick'
+ 1019 | pick[j] = orderPick/i; // use this for pick
+      | ^~~~
+../Core/Src/main.c:1020:1: error: expected declaration specifiers before 'place'
+ 1020 | place[j] = orderPlace/i; // use this for place
+      | ^~~~~
+../Core/Src/main.c:1021:1: error: expected declaration specifiers before 'orderPick'
+ 1021 | orderPick = orderPick%i;
+      | ^~~~~~~~~
+../Core/Src/main.c:1022:1: error: expected declaration specifiers before 'orderPlace'
+ 1022 | orderPlace = orderPlace%i;
+      | ^~~~~~~~~~
+../Core/Src/main.c:1023:1: error: expected declaration specifiers before 'j'
+ 1023 | j++;
+      | ^
+../Core/Src/main.c:1024:1: error: expected declaration specifiers before '}' token
+ 1024 | }
+      | ^
+../Core/Src/main.c:1025:1: error: expected declaration specifiers before '}' token
+ 1025 | }
+      | ^
+../Core/Src/main.c:1040:45: error: expected '=', ',', ';', 'asm' or '__attribute__' before '{' token
+ 1040 | void serviceMotor(uint32_t pwm, uint8_t dir){
+      |                                             ^
+../Core/Src/main.c:1065:27: error: expected '=', ',', ';', 'asm' or '__attribute__' before '{' token
+ 1065 | uint32_t getEncoderValue(){
+      |                           ^
+../Core/Src/main.c:1082:24: error: expected '=', ',', ';', 'asm' or '__attribute__' before '{' token
+ 1082 | void zeroEncoderValue(){
+      |                        ^
+../Core/Src/main.c:1098:19: error: expected '=', ',', ';', 'asm' or '__attribute__' before '{' token
+ 1098 | uint8_t getZStop(){
+      |                   ^
+../Core/Src/main.c:1103:47: error: expected '=', ',', ';', 'asm' or '__attribute__' before '{' token
+ 1103 | void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+      |                                               ^
+../Core/Src/main.c:1114:1: error: expected '=', ',', ';', 'asm' or '__attribute__' before '{' token
+ 1114 | {
+      | ^
+../Core/Src/main.c:1122:60: error: expected '=', ',', ';', 'asm' or '__attribute__' before '{' token
+ 1122 | void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+      |                                                            ^
+../Core/Src/main.c:1137:1: error: expected '=', ',', ';', 'asm' or '__attribute__' before '{' token
+ 1137 | {
+      | ^
+../Core/Src/main.c:1163: error: expected '{' at end of input
+make: *** [Core/Src/subdir.mk:40: Core/Src/main.o] Error 1
+"make -j8 all" terminated with exit code 2. Build might be incomplete.
+14:06:24 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:87:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   87 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:184:11: warning: unused variable 'result' [-Wunused-variable]
+  184 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  33392	    532	   5100	  39024	   9870	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+14:07:08 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-size  MainController.elf 
+   text	   data	    bss	    dec	    hex	filename
+  33392	    532	   5100	  39024	   9870	MainController.elf
+Finished building: default.size.stdout
+ 
+14:09:30 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-size  MainController.elf 
+   text	   data	    bss	    dec	    hex	filename
+  33392	    532	   5100	  39024	   9870	MainController.elf
+Finished building: default.size.stdout
+ 
+14:12:55 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:87:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   87 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:184:11: warning: unused variable 'result' [-Wunused-variable]
+  184 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  33400	    532	   5100	  39032	   9878	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+14:14:29 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:87:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   87 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:184:11: warning: unused variable 'result' [-Wunused-variable]
+  184 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  33400	    532	   5100	  39032	   9878	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+14:17:09 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:87:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   87 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:184:11: warning: unused variable 'result' [-Wunused-variable]
+  184 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  33416	    532	   5100	  39048	   9888	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+14:20:23 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:253:23: error: 'round' undeclared (first use in this function); did you mean 'rnd'?
+  253 |                       round = 0;
+      |                       ^~~~~
+      |                       rnd
+../Core/Src/main.c:253:23: note: each undeclared identifier is reported only once for each function it appears in
+../Core/Src/main.c:185:11: warning: unused variable 'result' [-Wunused-variable]
+  185 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+make: *** [Core/Src/subdir.mk:40: Core/Src/main.o] Error 1
+"make -j8 all" terminated with exit code 2. Build might be incomplete.
+14:21:07 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:185:11: warning: unused variable 'result' [-Wunused-variable]
+  185 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  33416	    532	   5100	  39048	   9888	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+14:21:42 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:185:11: warning: unused variable 'result' [-Wunused-variable]
+  185 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  33432	    532	   5100	  39064	   9898	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+14:29:41 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:185:11: warning: unused variable 'result' [-Wunused-variable]
+  185 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  33432	    532	   5100	  39064	   9898	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+14:32:30 **** Build of configuration Debug for project MODBUS2024ALT ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:66:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   66 | uint8_t round; // jog counter
+      |         ^~~~~
+arm-none-eabi-gcc -o "MODBUS2024ALT.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\MODBUS2024ALT\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MODBUS2024ALT.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MODBUS2024ALT.elf has a LOAD segment with RWX permissions
+Finished building target: MODBUS2024ALT.elf
+ 
+arm-none-eabi-size  MODBUS2024ALT.elf 
+arm-none-eabi-objdump -h -S MODBUS2024ALT.elf  > "MODBUS2024ALT.list"
+   text	   data	    bss	    dec	    hex	filename
+  25764	    532	   4068	  30364	   769c	MODBUS2024ALT.elf
+Finished building: default.size.stdout
+ 
+Finished building: MODBUS2024ALT.list
+ 
+14:38:12 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc "../Core/Src/stm32g4xx_hal_msp.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32g4xx_hal_msp.d" -MT"Core/Src/stm32g4xx_hal_msp.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32g4xx_hal_msp.o"
+arm-none-eabi-gcc "../Core/Src/stm32g4xx_it.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32g4xx_it.d" -MT"Core/Src/stm32g4xx_it.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32g4xx_it.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:185:11: warning: unused variable 'result' [-Wunused-variable]
+  185 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  33432	    532	   5100	  39064	   9898	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+14:41:05 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  33432	    532	   5100	  39064	   9898	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+15:05:22 **** Incremental Build of configuration Debug for project MODBUS2024ALT ****
+make -j8 all 
+arm-none-eabi-gcc -o "MODBUS2024ALT.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\MODBUS2024ALT\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MODBUS2024ALT.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MODBUS2024ALT.elf has a LOAD segment with RWX permissions
+Finished building target: MODBUS2024ALT.elf
+ 
+arm-none-eabi-size  MODBUS2024ALT.elf 
+arm-none-eabi-objdump -h -S MODBUS2024ALT.elf  > "MODBUS2024ALT.list"
+   text	   data	    bss	    dec	    hex	filename
+  25764	    532	   4068	  30364	   769c	MODBUS2024ALT.elf
+Finished building: default.size.stdout
+ 
+Finished building: MODBUS2024ALT.list
+ 
+15:10:20 **** Incremental Build of configuration Debug for project MODBUS2024ALT ****
+make -j8 all 
+arm-none-eabi-size  MODBUS2024ALT.elf 
+   text	   data	    bss	    dec	    hex	filename
+  25764	    532	   4068	  30364	   769c	MODBUS2024ALT.elf
+Finished building: default.size.stdout
+ 
+15:11:09 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:392:13: error: invalid storage class for function 'MX_TIM1_Init'
+  392 | static void MX_TIM1_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:486:13: error: invalid storage class for function 'MX_TIM2_Init'
+  486 | static void MX_TIM2_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:535:13: error: invalid storage class for function 'MX_TIM3_Init'
+  535 | static void MX_TIM3_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:594:13: error: invalid storage class for function 'MX_TIM5_Init'
+  594 | static void MX_TIM5_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:639:13: error: invalid storage class for function 'MX_TIM16_Init'
+  639 | static void MX_TIM16_Init(void)
+      |             ^~~~~~~~~~~~~
+../Core/Src/main.c:675:13: error: invalid storage class for function 'MX_USART1_UART_Init'
+  675 | static void MX_USART1_UART_Init(void)
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:723:13: error: invalid storage class for function 'MX_USART2_UART_Init'
+  723 | static void MX_USART2_UART_Init(void)
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:769:13: error: invalid storage class for function 'MX_DMA_Init'
+  769 | static void MX_DMA_Init(void)
+      |             ^~~~~~~~~~~
+../Core/Src/main.c:798:13: error: invalid storage class for function 'MX_GPIO_Init'
+  798 | static void MX_GPIO_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:1144:1: error: expected declaration or statement at end of input
+ 1144 | }
+      | ^
+../Core/Src/main.c:185:11: warning: unused variable 'result' [-Wunused-variable]
+  185 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:93:13: warning: 'MX_GPIO_Init' used but never defined
+   93 | static void MX_GPIO_Init(void);
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:94:13: warning: 'MX_DMA_Init' used but never defined
+   94 | static void MX_DMA_Init(void);
+      |             ^~~~~~~~~~~
+../Core/Src/main.c:95:13: warning: 'MX_USART1_UART_Init' used but never defined
+   95 | static void MX_USART1_UART_Init(void);
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:96:13: warning: 'MX_USART2_UART_Init' used but never defined
+   96 | static void MX_USART2_UART_Init(void);
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:97:13: warning: 'MX_TIM1_Init' used but never defined
+   97 | static void MX_TIM1_Init(void);
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:98:13: warning: 'MX_TIM2_Init' used but never defined
+   98 | static void MX_TIM2_Init(void);
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:99:13: warning: 'MX_TIM3_Init' used but never defined
+   99 | static void MX_TIM3_Init(void);
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:100:13: warning: 'MX_TIM5_Init' used but never defined
+  100 | static void MX_TIM5_Init(void);
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:101:13: warning: 'MX_TIM16_Init' used but never defined
+  101 | static void MX_TIM16_Init(void);
+      |             ^~~~~~~~~~~~~
+../Core/Src/main.c:1135:6: warning: 'Error_Handler' defined but not used [-Wunused-function]
+ 1135 | void Error_Handler(void)
+      |      ^~~~~~~~~~~~~
+../Core/Src/main.c:1122:6: warning: 'HAL_TIM_PeriodElapsedCallback' defined but not used [-Wunused-function]
+ 1122 | void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:1113:6: warning: 'HAL_TIM_PWM_PulseFinishedCallback' defined but not used [-Wunused-function]
+ 1113 | void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:1103:6: warning: 'HAL_GPIO_EXTI_Callback' defined but not used [-Wunused-function]
+ 1103 | void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+      |      ^~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:1098:9: warning: 'getZStop' defined but not used [-Wunused-function]
+ 1098 | uint8_t getZStop(){
+      |         ^~~~~~~~
+../Core/Src/main.c:1082:6: warning: 'zeroEncoderValue' defined but not used [-Wunused-function]
+ 1082 | void zeroEncoderValue(){
+      |      ^~~~~~~~~~~~~~~~
+../Core/Src/main.c:1065:10: warning: 'getEncoderValue' defined but not used [-Wunused-function]
+ 1065 | uint32_t getEncoderValue(){
+      |          ^~~~~~~~~~~~~~~
+../Core/Src/main.c:1040:6: warning: 'serviceMotor' defined but not used [-Wunused-function]
+ 1040 | void serviceMotor(uint32_t pwm, uint8_t dir){
+      |      ^~~~~~~~~~~~
+../Core/Src/main.c:798:13: warning: 'MX_GPIO_Init' defined but not used [-Wunused-function]
+  798 | static void MX_GPIO_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:769:13: warning: 'MX_DMA_Init' defined but not used [-Wunused-function]
+  769 | static void MX_DMA_Init(void)
+      |             ^~~~~~~~~~~
+../Core/Src/main.c:723:13: warning: 'MX_USART2_UART_Init' defined but not used [-Wunused-function]
+  723 | static void MX_USART2_UART_Init(void)
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:675:13: warning: 'MX_USART1_UART_Init' defined but not used [-Wunused-function]
+  675 | static void MX_USART1_UART_Init(void)
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:639:13: warning: 'MX_TIM16_Init' defined but not used [-Wunused-function]
+  639 | static void MX_TIM16_Init(void)
+      |             ^~~~~~~~~~~~~
+../Core/Src/main.c:594:13: warning: 'MX_TIM5_Init' defined but not used [-Wunused-function]
+  594 | static void MX_TIM5_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:535:13: warning: 'MX_TIM3_Init' defined but not used [-Wunused-function]
+  535 | static void MX_TIM3_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:486:13: warning: 'MX_TIM2_Init' defined but not used [-Wunused-function]
+  486 | static void MX_TIM2_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:392:13: warning: 'MX_TIM1_Init' defined but not used [-Wunused-function]
+  392 | static void MX_TIM1_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:345:6: warning: 'SystemClock_Config' defined but not used [-Wunused-function]
+  345 | void SystemClock_Config(void)
+      |      ^~~~~~~~~~~~~~~~~~
+make: *** [Core/Src/subdir.mk:40: Core/Src/main.o] Error 1
+"make -j8 all" terminated with exit code 2. Build might be incomplete.
+15:12:01 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:392:13: error: invalid storage class for function 'MX_TIM1_Init'
+  392 | static void MX_TIM1_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:486:13: error: invalid storage class for function 'MX_TIM2_Init'
+  486 | static void MX_TIM2_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:535:13: error: invalid storage class for function 'MX_TIM3_Init'
+  535 | static void MX_TIM3_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:594:13: error: invalid storage class for function 'MX_TIM5_Init'
+  594 | static void MX_TIM5_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:639:13: error: invalid storage class for function 'MX_TIM16_Init'
+  639 | static void MX_TIM16_Init(void)
+      |             ^~~~~~~~~~~~~
+../Core/Src/main.c:675:13: error: invalid storage class for function 'MX_USART1_UART_Init'
+  675 | static void MX_USART1_UART_Init(void)
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:723:13: error: invalid storage class for function 'MX_USART2_UART_Init'
+  723 | static void MX_USART2_UART_Init(void)
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:769:13: error: invalid storage class for function 'MX_DMA_Init'
+  769 | static void MX_DMA_Init(void)
+      |             ^~~~~~~~~~~
+../Core/Src/main.c:798:13: error: invalid storage class for function 'MX_GPIO_Init'
+  798 | static void MX_GPIO_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:1144:1: error: expected declaration or statement at end of input
+ 1144 | }
+      | ^
+../Core/Src/main.c:185:11: warning: unused variable 'result' [-Wunused-variable]
+  185 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:93:13: warning: 'MX_GPIO_Init' used but never defined
+   93 | static void MX_GPIO_Init(void);
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:94:13: warning: 'MX_DMA_Init' used but never defined
+   94 | static void MX_DMA_Init(void);
+      |             ^~~~~~~~~~~
+../Core/Src/main.c:95:13: warning: 'MX_USART1_UART_Init' used but never defined
+   95 | static void MX_USART1_UART_Init(void);
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:96:13: warning: 'MX_USART2_UART_Init' used but never defined
+   96 | static void MX_USART2_UART_Init(void);
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:97:13: warning: 'MX_TIM1_Init' used but never defined
+   97 | static void MX_TIM1_Init(void);
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:98:13: warning: 'MX_TIM2_Init' used but never defined
+   98 | static void MX_TIM2_Init(void);
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:99:13: warning: 'MX_TIM3_Init' used but never defined
+   99 | static void MX_TIM3_Init(void);
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:100:13: warning: 'MX_TIM5_Init' used but never defined
+  100 | static void MX_TIM5_Init(void);
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:101:13: warning: 'MX_TIM16_Init' used but never defined
+  101 | static void MX_TIM16_Init(void);
+      |             ^~~~~~~~~~~~~
+../Core/Src/main.c:1135:6: warning: 'Error_Handler' defined but not used [-Wunused-function]
+ 1135 | void Error_Handler(void)
+      |      ^~~~~~~~~~~~~
+../Core/Src/main.c:1122:6: warning: 'HAL_TIM_PeriodElapsedCallback' defined but not used [-Wunused-function]
+ 1122 | void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:1113:6: warning: 'HAL_TIM_PWM_PulseFinishedCallback' defined but not used [-Wunused-function]
+ 1113 | void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:1103:6: warning: 'HAL_GPIO_EXTI_Callback' defined but not used [-Wunused-function]
+ 1103 | void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+      |      ^~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:1098:9: warning: 'getZStop' defined but not used [-Wunused-function]
+ 1098 | uint8_t getZStop(){
+      |         ^~~~~~~~
+../Core/Src/main.c:1082:6: warning: 'zeroEncoderValue' defined but not used [-Wunused-function]
+ 1082 | void zeroEncoderValue(){
+      |      ^~~~~~~~~~~~~~~~
+../Core/Src/main.c:1065:10: warning: 'getEncoderValue' defined but not used [-Wunused-function]
+ 1065 | uint32_t getEncoderValue(){
+      |          ^~~~~~~~~~~~~~~
+../Core/Src/main.c:1040:6: warning: 'serviceMotor' defined but not used [-Wunused-function]
+ 1040 | void serviceMotor(uint32_t pwm, uint8_t dir){
+      |      ^~~~~~~~~~~~
+../Core/Src/main.c:798:13: warning: 'MX_GPIO_Init' defined but not used [-Wunused-function]
+  798 | static void MX_GPIO_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:769:13: warning: 'MX_DMA_Init' defined but not used [-Wunused-function]
+  769 | static void MX_DMA_Init(void)
+      |             ^~~~~~~~~~~
+../Core/Src/main.c:723:13: warning: 'MX_USART2_UART_Init' defined but not used [-Wunused-function]
+  723 | static void MX_USART2_UART_Init(void)
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:675:13: warning: 'MX_USART1_UART_Init' defined but not used [-Wunused-function]
+  675 | static void MX_USART1_UART_Init(void)
+      |             ^~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:639:13: warning: 'MX_TIM16_Init' defined but not used [-Wunused-function]
+  639 | static void MX_TIM16_Init(void)
+      |             ^~~~~~~~~~~~~
+../Core/Src/main.c:594:13: warning: 'MX_TIM5_Init' defined but not used [-Wunused-function]
+  594 | static void MX_TIM5_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:535:13: warning: 'MX_TIM3_Init' defined but not used [-Wunused-function]
+  535 | static void MX_TIM3_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:486:13: warning: 'MX_TIM2_Init' defined but not used [-Wunused-function]
+  486 | static void MX_TIM2_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:392:13: warning: 'MX_TIM1_Init' defined but not used [-Wunused-function]
+  392 | static void MX_TIM1_Init(void)
+      |             ^~~~~~~~~~~~
+../Core/Src/main.c:345:6: warning: 'SystemClock_Config' defined but not used [-Wunused-function]
+  345 | void SystemClock_Config(void)
+      |      ^~~~~~~~~~~~~~~~~~
+make: *** [Core/Src/subdir.mk:40: Core/Src/main.o] Error 1
+"make -j8 all" terminated with exit code 2. Build might be incomplete.
+15:13:26 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:185:11: warning: unused variable 'result' [-Wunused-variable]
+  185 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:340:1: error: expected identifier or '(' before '}' token
+  340 | }
+      | ^
+make: *** [Core/Src/subdir.mk:40: Core/Src/main.o] Error 1
+"make -j8 all" terminated with exit code 2. Build might be incomplete.
+15:13:56 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:185:11: warning: unused variable 'result' [-Wunused-variable]
+  185 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  32516	    532	   5060	  38108	   94dc	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+15:15:17 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:185:11: warning: unused variable 'result' [-Wunused-variable]
+  185 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  33432	    532	   5100	  39064	   9898	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+15:19:37 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:185:11: warning: unused variable 'result' [-Wunused-variable]
+  185 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  33432	    532	   5100	  39064	   9898	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+15:22:34 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:185:11: warning: unused variable 'result' [-Wunused-variable]
+  185 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  32552	    532	   5060	  38144	   9500	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+15:23:50 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:185:11: warning: unused variable 'result' [-Wunused-variable]
+  185 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  32500	    532	   5052	  38084	   94c4	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+15:24:57 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:185:11: warning: unused variable 'result' [-Wunused-variable]
+  185 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  32516	    532	   5060	  38108	   94dc	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+15:26:36 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:185:11: warning: unused variable 'result' [-Wunused-variable]
+  185 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  32544	    532	   5060	  38136	   94f8	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+15:28:08 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:185:11: warning: unused variable 'result' [-Wunused-variable]
+  185 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  32516	    532	   5060	  38108	   94dc	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+15:29:46 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:185:11: warning: unused variable 'result' [-Wunused-variable]
+  185 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  32524	    532	   5060	  38116	   94e4	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+15:34:58 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:185:11: warning: unused variable 'result' [-Wunused-variable]
+  185 |   uint8_t result = HomeZ();
+      |           ^~~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  32552	    532	   5060	  38144	   9500	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+15:39:45 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:224:19: error: 'timestamp' undeclared (first use in this function)
+  224 |                   timestamp = HAL_GetTick()+2000;
+      |                   ^~~~~~~~~
+../Core/Src/main.c:224:19: note: each undeclared identifier is reported only once for each function it appears in
+make: *** [Core/Src/subdir.mk:40: Core/Src/main.o] Error 1
+"make -j8 all" terminated with exit code 2. Build might be incomplete.
+15:40:13 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  32428	    532	   5068	  38028	   948c	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+15:42:06 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  32524	    532	   5068	  38124	   94ec	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+15:43:30 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  33188	    532	   5100	  38820	   97a4	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+15:43:42 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-size  MainController.elf 
+   text	   data	    bss	    dec	    hex	filename
+  33188	    532	   5100	  38820	   97a4	MainController.elf
+Finished building: default.size.stdout
+ 
+15:48:00 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  33216	    532	   5092	  38840	   97b8	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+15:51:01 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  33228	    532	   5100	  38860	   97cc	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+15:51:57 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  33216	    532	   5092	  38840	   97b8	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+15:54:33 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  33216	    532	   5092	  38840	   97b8	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 
+15:55:07 **** Incremental Build of configuration Debug for project MainController ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
+   88 | uint8_t round; // jog counter
+      |         ^~~~~
+arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
+Finished building target: MainController.elf
+ 
+arm-none-eabi-size  MainController.elf 
+arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
+   text	   data	    bss	    dec	    hex	filename
+  33228	    532	   5100	  38860	   97cc	MainController.elf
+Finished building: default.size.stdout
+ 
+Finished building: MainController.list
+ 

@@ -44,12 +44,12 @@
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
-TIM_HandleTypeDef htim5; //modbus
+TIM_HandleTypeDef htim5;
 TIM_HandleTypeDef htim16;
 DMA_HandleTypeDef hdma_tim3_ch2;
 
 UART_HandleTypeDef huart1;
-UART_HandleTypeDef huart2; // modbus
+UART_HandleTypeDef huart2;
 DMA_HandleTypeDef hdma_usart1_rx;
 DMA_HandleTypeDef hdma_usart2_rx;
 DMA_HandleTypeDef hdma_usart2_tx;
@@ -79,6 +79,7 @@ u16u8_t registerFrame[200]; //middle between base n z axis (they will see the sa
 uint16_t shelfPos[5];
 uint16_t piingpong;
 uint16_t setPos;
+uint8_t deb = 0;
 
 uint16_t temPick; // temporary shelves order
 uint16_t temPlace;
@@ -99,8 +100,8 @@ static void MX_TIM3_Init(void);
 static void MX_TIM5_Init(void);
 static void MX_TIM16_Init(void);
 /* USER CODE BEGIN PFP */
-void BaseAction(void);
-void OrderSeparate(void);
+//void BaseAction(void);
+//void OrderSeparate(void);
 
 /* USER CODE END PFP */
 
@@ -144,8 +145,8 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
-  MX_TIM5_Init(); //modbus
-  MX_TIM16_Init(); //modbus
+  MX_TIM5_Init();
+  MX_TIM16_Init();
   /* USER CODE BEGIN 2 */
 
   // @User: Setup UART 1 for communication with joy stick
@@ -181,7 +182,7 @@ int main(void)
   // TODO: Test subroutine
 //  uint16_t result = retractX();
 //  uint16_t result = extendX();
-  uint8_t result = HomeZ();
+  //uint8_t result = HomeZ();
 
   /* USER CODE END 2 */
 
@@ -193,140 +194,147 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
+
+
 	  // TODO: Test encoder QEI, remove later
 	  qeiRaw = __HAL_TIM_GET_COUNTER(&htim2);
 
-	  ///*MODBUS PART
 	  Modbus_Protocal_Worker();
-
 	  vacuum = registerFrame[0x02].U16;
-	 	  gripper = registerFrame[0x03].U16;
-	 	  registerFrame[0x04].U16 = reed;
+	  gripper = registerFrame[0x03].U16;
+	  registerFrame[0x04].U16 = reed;
 
-	 	  static uint16_t timestamp = 0;
-	 	  //Set shelves
-	 	  if(registerFrame[0x01].U16 == 1)
-	 	  {
-	 		  registerFrame[0x01].U16 = 0;
-	 		  registerFrame[0x10].U16 = 1;
-	 		  registerFrame[0x23].U16 = shelfPos[0];
-	 		  registerFrame[0x24].U16 = shelfPos[1];
-	 		  registerFrame[0x25].U16 = shelfPos[2];
-	 		  registerFrame[0x26].U16 = shelfPos[3];
-	 		  registerFrame[0x27].U16 = shelfPos[4];
-	 		  //delay 2000ms
-	 		  timestamp = HAL_GetTick()+2000;
-	 	  }
-	 	  if(HAL_GetTick() >= timestamp && (registerFrame[0x10].U16 == 1))
-	 	  {
-	 		  registerFrame[0x10].U16 = 0;
-	 	  }
-	 	  //Home
-	 	  if(registerFrame[0x01].U16 == 2)
-	 	  {
-	 		  registerFrame[0x01].U16 = 0;
-	 		  registerFrame[0x10].U16 = 2;
-	 		  setPos =  shelfPos[0];
-	 	  }
-	 	  //point mode
-	 	  if(registerFrame[0x01].U16 == 8)
-	 	  {
-	 		  registerFrame[0x01].U16 = 0;
-	 		  registerFrame[0x10].U16 = 16;
-	 		  setPos =  registerFrame[0x30].U16;
-	 	  }
-	 	  //reset
-	 	  if(piingpong == 1 && (registerFrame[0x10].U16 == 2 || registerFrame[0x10].U16 == 16) )//check piingpong status
-	 	  {
-	 		  registerFrame[0x10].U16 = 0;
-	 	  }
-	 	  //jog mode
-	 	  if((registerFrame[0x01].U16 == 4))
-	 	  {
-	 		  registerFrame[0x01].U16 = 0; //reset status
+	  ///*MODBUS PART
+	  if(registerFrame[0x00].U16 != 22881){
+		  registerFrame[0x00].U16 = 22881;
+		  deb++;
+	  }
 
-	 	      temPick = (registerFrame[0x21].U16);
-	 	      temPlace = (registerFrame[0x22].U16);
-	 	      round = 0;
-	 	      ////// Convert to string
-	 	      for(uint16_t i = 10000;i>=1;i/=10)
-	 	      {
-	 	    	  if(temPick/i == 0 || temPick/i > 5 || temPlace/i == 0 || temPlace/i > 5) // check if 0 or > 5
-	 	    	  {
-	 	    		  round = 0;
-	 	    		  break;
-	 	    	  }
-	 	    	  pick[round] = temPick/i; // use this for pick
-	 	    	  place[round] = temPlace/i; // use this for place
-	 	    	  temPick = temPick%i;
-	 	    	  temPlace = temPlace%i;
-	 	    	  round++;
-	 	      }
-	 	  }
-	 	  else if(round > 0) //  run Jog
-	 	  	{
-	 	  		if(registerFrame[0x10].U16 == 0 && round == 5 && gripper == 0 && reed == 1 && vacuum == 0) // first rev
-	 	  		{
-	 	  			(registerFrame[0x10].U16) = 4; // Z-go pick
-	 	  			setPos = shelfPos[pick[5-round]-1];
-	 	  		}
-	 	  		if((piingpong && registerFrame[0x10].U16 == 8)) // prev mode: place, do pick
-	 	  		{
-	 	  			///////place down
 
-	 	  			if(reed != 2){
-	 	  				registerFrame[0x03].U16 = 1; // gripper forward
-	 	  			}
-	 	  			else //reached
-	 	  			{
-	 	  				registerFrame[0x02].U16 = 0; //vacuum off
-	 	  					//Delay a few sec
-	 	  				registerFrame[0x03].U16 = 0; //gripper backward
-	 	  			}
-	 	  			///////finish place -> move on
-	 	  			if(gripper == 0 && reed == 1 && vacuum == 0)
-	 	  			{
-	 	  				round--;
-	 	  				if(round>0)
-	 	  				{
-	 	  					(registerFrame[0x10].U16) = 4; // Z-go pick
-	 	  					setPos = shelfPos[pick[5-round]-1];
-	 	  				}
-	 	  				else
-	 	  				{
-	 	  					(registerFrame[0x10].U16 = 0); // End Jogs
-	 	  				}
-	 	  			}
-	 	  			//MoveTosetPos();
-	 	  		}
-	 	  		else if(piingpong && registerFrame[0x10].U16 == 4)// prev mode: pick, do place
-	 	  		{
-	 	  			//////pick up
-	 	  			if(reed != 2)
-	 	  			{
-	 	  				registerFrame[0x03].U16 = 1; //gripper forward
-	 	  			}
-	 	  			else
-	 	  			{
-	 	  				registerFrame[0x02].U16 = 1; //vacuum on
-	 	  				// Delay a few sec
-	 	  				registerFrame[0x03].U16 = 0; //gripper backward
-	 	  			}
-	 	  			///////finish pick -> move on
-	 	  			if(gripper == 0 && reed == 1 && vacuum == 1)
-	 	  			{
-	 	  				(registerFrame[0x10].U16) = 8; // Z-go place
-	 	  				setPos = shelfPos[place[5-round]-1];
-	 	  			}
-	 	  		}
+ 	  static uint16_t timestamp = 0;
+ 	  //Set shelves
+ 	  if(registerFrame[0x01].U16 == 1)
+ 	  {
+ 		  registerFrame[0x01].U16 = 0;
+ 		  registerFrame[0x10].U16 = 1;
+ 		  registerFrame[0x23].U16 = shelfPos[0];
+ 		  registerFrame[0x24].U16 = shelfPos[1];
+ 		  registerFrame[0x25].U16 = shelfPos[2];
+ 		  registerFrame[0x26].U16 = shelfPos[3];
+ 		  registerFrame[0x27].U16 = shelfPos[4];
+ 		  //delay 2000ms
+ 		  timestamp = HAL_GetTick()+2000;
+ 	  }
+ 	  if(HAL_GetTick() >= timestamp && (registerFrame[0x10].U16 == 1))
+ 	  {
+ 		  registerFrame[0x10].U16 = 0;
+ 	  }
+ 	  //Home
+ 	  if(registerFrame[0x01].U16 == 2)
+ 	  {
+ 		  registerFrame[0x01].U16 = 0;
+ 		  registerFrame[0x10].U16 = 2;
+ 		  setPos =  shelfPos[0];
+ 	  }
+ 	  //point mode
+ 	  if(registerFrame[0x01].U16 == 8)
+ 	  {
+ 		  registerFrame[0x01].U16 = 0;
+ 		  registerFrame[0x10].U16 = 16;
+ 		  setPos =  registerFrame[0x30].U16;
+ 	  }
+ 	  //reset
+ 	  if(piingpong == 1 && (registerFrame[0x10].U16 == 2 || registerFrame[0x10].U16 == 16) )//check piingpong status
+ 	  {
+ 		  registerFrame[0x10].U16 = 0;
+ 	  }
+ 	  //jog mode
+ 	  if((registerFrame[0x01].U16 == 4))
+ 	  {
+ 		  registerFrame[0x01].U16 = 0; //reset status
 
-	 	  	}
+ 	      temPick = (registerFrame[0x21].U16);
+ 	      temPlace = (registerFrame[0x22].U16);
+ 	      round = 0;
+ 	      ////// Convert to string
+ 	      for(uint16_t i = 10000;i>=1;i/=10)
+ 	      {
+ 	    	  if(temPick/i == 0 || temPick/i > 5 || temPlace/i == 0 || temPlace/i > 5) // check if 0 or > 5
+ 	    	  {
+ 	    		  round = 0;
+ 	    		  break;
+ 	    	  }
+ 	    	  pick[round] = temPick/i; // use this for pick
+ 	    	  place[round] = temPlace/i; // use this for place
+ 	    	  temPick = temPick%i;
+ 	    	  temPlace = temPlace%i;
+ 	    	  round++;
+ 	      }
+ 	  }
+ 	  else if(round > 0) //  run Jog
+ 	  {
+ 	  		if(registerFrame[0x10].U16 == 0 && round == 5 && gripper == 0 && reed == 1 && vacuum == 0) // first rev
+ 	  		{
+ 	  			(registerFrame[0x10].U16) = 4; // Z-go pick
+ 	  			setPos = shelfPos[pick[5-round]-1];
+ 	  		}
+ 	  		if((piingpong && registerFrame[0x10].U16 == 8)) // prev mode: place, do pick
+ 	  		{
+ 	  			///////place down
 
-	 	  	else if(piingpong && (registerFrame[0x10].U16 == 2 || registerFrame[0x10].U16 == 16))
-	 	  	{
-	 	  		//finish point & home mode
-	 	  		registerFrame[0x10].U16 = 0;
-	 	  	}
+ 	  			if(reed != 2){
+ 	  				registerFrame[0x03].U16 = 1; // gripper forward
+ 	  			}
+ 	  			else //reached
+ 	  			{
+ 	  				registerFrame[0x02].U16 = 0; //vacuum off
+ 	  					//Delay a few sec
+ 	  				registerFrame[0x03].U16 = 0; //gripper backward
+ 	  			}
+ 	  			///////finish place -> move on
+ 	  			if(gripper == 0 && reed == 1 && vacuum == 0)
+ 	  			{
+ 	  				round--;
+ 	  				if(round>0)
+ 	  				{
+ 	  					(registerFrame[0x10].U16) = 4; // Z-go pick
+ 	  					setPos = shelfPos[pick[5-round]-1];
+ 	  				}
+ 	  				else
+ 	  				{
+ 	  					(registerFrame[0x10].U16 = 0); // End Jogs
+ 	  				}
+ 	  			}
+ 	  			//MoveTosetPos();
+ 	  		}
+ 	  		else if(piingpong && registerFrame[0x10].U16 == 4)// prev mode: pick, do place
+ 	  		{
+ 	  			//////pick up
+ 	  			if(reed != 2)
+ 	  			{
+ 	  				registerFrame[0x03].U16 = 1; //gripper forward
+ 	  			}
+ 	  			else
+ 	  			{
+ 	  				registerFrame[0x02].U16 = 1; //vacuum on
+ 	  				// Delay a few sec
+ 	  				registerFrame[0x03].U16 = 0; //gripper backward
+ 	  			}
+ 	  			///////finish pick -> move on
+ 	  			if(gripper == 0 && reed == 1 && vacuum == 1)
+ 	  			{
+ 	  				(registerFrame[0x10].U16) = 8; // Z-go place
+ 	  				setPos = shelfPos[place[5-round]-1];
+ 	  			}
+ 	  		}
+
+ 	  	}
+
+ 	  	else if(piingpong && (registerFrame[0x10].U16 == 2 || registerFrame[0x10].U16 == 16))
+ 	  	{
+ 	  		//finish point & home mode
+ 	  		registerFrame[0x10].U16 = 0;
+ 	  	}
   }
   /* USER CODE END 3 */
 }
@@ -862,160 +870,160 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void BaseAction(void){
-
-	///// vacuum & gripper ////////////////
-		reed = r1_state + 2 * r2_state;
-		vacuum = registerFrame[0x02].U16; // 1 on , 0 off
-		gripper = registerFrame[0x03].U16; // 1 forward , 0 backward
-		registerFrame[0x04].U16 = reed;  // 1 for withdrawn , 2 for extracted
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, vacuum);
-		gripperEvent();
-
-		registerFrame[0x11].U16 = (uint16_t)(linear_position * 10); //Position
-		registerFrame[0x12].U16 = (uint16_t)(linear_velocity * 10); //Velocity
-		registerFrame[0x13].U16 = (uint16_t)(linear_accel * 10)	; //Acceleration
-		registerFrame[0x40].U16 = x_pos; // X-axis Position
-
-	////Set Shelves
-		static uint64_t timestamp = 0;
-		if((registerFrame[0x01].U16) == 1)
-		{
-			(registerFrame[0x01].U16) = 0; //reset status
-			(registerFrame[0x10].U16) = 1; // Z-setting shelve
-			// 1st -> 5th shelve position // unit : mm*10
-			(registerFrame[0x23].U16) = shelvePos[0];
-			(registerFrame[0x24].U16) = shelvePos[1];
-			(registerFrame[0x25].U16) = shelvePos[2];
-			(registerFrame[0x26].U16) = shelvePos[3];
-			(registerFrame[0x27].U16) = shelvePos[4];
-		}
-
-	////home
-		else if((registerFrame[0x01].U16 == 2))
-		{
-			(registerFrame[0x01].U16) = 0; //reset status
-			(registerFrame[0x10].U16) = 2; //Z-home
-
-			Goal = shelvePos[0]; // set goal to home
-		}
-	//// read & run Point
-		else if((registerFrame[0x01].U16) == 8)
-		{
-			(registerFrame[0x01].U16) = 0; //reset status
-			(registerFrame[0x10].U16) = 16; // Z-go point
-
-			Goal = (registerFrame[0x30].U16); // goal = point
-		}
-	//// read Jog (convert to array)
-		else if((registerFrame[0x01].U16 == 4))
-		{
-			(registerFrame[0x01].U16) = 0; //reset status
-
-			orderPick = (registerFrame[0x21].U16);
-			orderPlace = (registerFrame[0x22].U16);
-			OrderSeparate();
-		}
-	//// run Jog ////
-		else if(j > 0)
-		{
-			if(registerFrame[0x10].U16 == 0 && j == 5 && gripper == 0 && reed == 1 && vacuum == 0) // first rev
-			{
-				mode = 0; // for debug
-				(registerFrame[0x10].U16) = 4; // Z-go pick
-				Goal = shelvePos[pick[5-j]-1];
-			}
-			if((flagPID && registerFrame[0x10].U16 == 8)) // prev mode: place, do pick
-			{
-				///////place down
-				mode = 6;
-				if(reed != 2 && j>0){
-
-					registerFrame[0x03].U16 = 1; // gripper forward
-				}
-				else if(registerFrame[0x02].U16 == 1)//reached reed vacuum not off
-				{
-					registerFrame[0x02].U16 = 0; //vacuum off
-					timestamp = HAL_GetTick() + 500; // 0.5 sec delay
-				}
-				else if(HAL_GetTick() >= timestamp)
-				{
-					registerFrame[0x03].U16 = 0; //gripper backward
-				}
-				///////finish place -> move on
-				if(gripper == 0 && reed == 1 && vacuum == 0)
-				{
-					j--;
-					if(j>0)
-					{
-						(registerFrame[0x10].U16) = 4; // Z-go pick
-						Goal = shelvePos[pick[5-j]-1];
-					}
-				}
-			}
-			else if(flagPID && registerFrame[0x10].U16 == 4)// prev mode: pick, do place
-			{
-				//////pick up
-				mode = 9;
-				if(reed == 1)
-				{
-					registerFrame[0x02].U16 = 1; //vacuum on
-					registerFrame[0x03].U16 = 1; //gripper forward
-				}
-
-				else if(reed == 2)
-				{
-					registerFrame[0x03].U16 = 0; //gripper backward
-				}
-				///////finish pick -> move on
-				if(gripper == 0 && reed == 1 && vacuum == 1)
-				{
-					(registerFrame[0x10].U16) = 8; // Z-go place
-					Goal = shelvePos[place[5-j]-1];
-				}
-			}
-		}
-	////End Jog//
-		else if(registerFrame[0x10].U16 == 8 && j == 0)
-		{
-			(registerFrame[0x10].U16 = 0); // End Jogs
-		}
-	//End point & Home//
-		else if(flagPID && (registerFrame[0x10].U16 == 2 || registerFrame[0x10].U16 == 16))
-		{
-			//finish point & home mode
-			static uint64_t Timestamp = 0;
-			if(jj == 0){
-				Timestamp = HAL_GetTick() + 1000; //delay
-				jj = 1;
-			}
-			else if(HAL_GetTick() >= Timestamp)
-			{
-				registerFrame[0x10].U16 = 0; // finish point & home mode
-				jj = 0;
-			}
-		}
-
-	}
-void OrderSeparate(void)
-{
-j = 0;
-////// Convert to string
-for(uint16_t i = 10000;i>=1;i/=10)
-{
-if(orderPick/i <= 0 || orderPick/i > 5 || orderPlace/i <= 0 || orderPlace/i > 5) // check if 0 or > 5
-{
-j = 0;
-mode = 100;
-break;
-}
-pick[j] = orderPick/i; // use this for pick
-place[j] = orderPlace/i; // use this for place
-orderPick = orderPick%i;
-orderPlace = orderPlace%i;
-j++;
-}
-}
+//void BaseAction(void){
+//
+//	///// vacuum & gripper ////////////////
+//		reed = r1_state + 2 * r2_state;
+//		vacuum = registerFrame[0x02].U16; // 1 on , 0 off
+//		gripper = registerFrame[0x03].U16; // 1 forward , 0 backward
+//		registerFrame[0x04].U16 = reed;  // 1 for withdrawn , 2 for extracted
+//		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, vacuum);
+//		gripperEvent();
+//
+//		registerFrame[0x11].U16 = (uint16_t)(linear_position * 10); //Position
+//		registerFrame[0x12].U16 = (uint16_t)(linear_velocity * 10); //Velocity
+//		registerFrame[0x13].U16 = (uint16_t)(linear_accel * 10)	; //Acceleration
+//		registerFrame[0x40].U16 = x_pos; // X-axis Position
+//
+//	////Set Shelves
+//		static uint64_t timestamp = 0;
+//		if((registerFrame[0x01].U16) == 1)
+//		{
+//			(registerFrame[0x01].U16) = 0; //reset status
+//			(registerFrame[0x10].U16) = 1; // Z-setting shelve
+//			// 1st -> 5th shelve position // unit : mm*10
+//			(registerFrame[0x23].U16) = shelvePos[0];
+//			(registerFrame[0x24].U16) = shelvePos[1];
+//			(registerFrame[0x25].U16) = shelvePos[2];
+//			(registerFrame[0x26].U16) = shelvePos[3];
+//			(registerFrame[0x27].U16) = shelvePos[4];
+//		}
+//
+//	////home
+//		else if((registerFrame[0x01].U16 == 2))
+//		{
+//			(registerFrame[0x01].U16) = 0; //reset status
+//			(registerFrame[0x10].U16) = 2; //Z-home
+//
+//			Goal = shelvePos[0]; // set goal to home
+//		}
+//	//// read & run Point
+//		else if((registerFrame[0x01].U16) == 8)
+//		{
+//			(registerFrame[0x01].U16) = 0; //reset status
+//			(registerFrame[0x10].U16) = 16; // Z-go point
+//
+//			Goal = (registerFrame[0x30].U16); // goal = point
+//		}
+//	//// read Jog (convert to array)
+//		else if((registerFrame[0x01].U16 == 4))
+//		{
+//			(registerFrame[0x01].U16) = 0; //reset status
+//
+//			orderPick = (registerFrame[0x21].U16);
+//			orderPlace = (registerFrame[0x22].U16);
+//			OrderSeparate();
+//		}
+//	//// run Jog ////
+//		else if(j > 0)
+//		{
+//			if(registerFrame[0x10].U16 == 0 && j == 5 && gripper == 0 && reed == 1 && vacuum == 0) // first rev
+//			{
+//				mode = 0; // for debug
+//				(registerFrame[0x10].U16) = 4; // Z-go pick
+//				Goal = shelvePos[pick[5-j]-1];
+//			}
+//			if((flagPID && registerFrame[0x10].U16 == 8)) // prev mode: place, do pick
+//			{
+//				///////place down
+//				mode = 6;
+//				if(reed != 2 && j>0){
+//
+//					registerFrame[0x03].U16 = 1; // gripper forward
+//				}
+//				else if(registerFrame[0x02].U16 == 1)//reached reed vacuum not off
+//				{
+//					registerFrame[0x02].U16 = 0; //vacuum off
+//					timestamp = HAL_GetTick() + 500; // 0.5 sec delay
+//				}
+//				else if(HAL_GetTick() >= timestamp)
+//				{
+//					registerFrame[0x03].U16 = 0; //gripper backward
+//				}
+//				///////finish place -> move on
+//				if(gripper == 0 && reed == 1 && vacuum == 0)
+//				{
+//					j--;
+//					if(j>0)
+//					{
+//						(registerFrame[0x10].U16) = 4; // Z-go pick
+//						Goal = shelvePos[pick[5-j]-1];
+//					}
+//				}
+//			}
+//			else if(flagPID && registerFrame[0x10].U16 == 4)// prev mode: pick, do place
+//			{
+//				//////pick up
+//				mode = 9;
+//				if(reed == 1)
+//				{
+//					registerFrame[0x02].U16 = 1; //vacuum on
+//					registerFrame[0x03].U16 = 1; //gripper forward
+//				}
+//
+//				else if(reed == 2)
+//				{
+//					registerFrame[0x03].U16 = 0; //gripper backward
+//				}
+//				///////finish pick -> move on
+//				if(gripper == 0 && reed == 1 && vacuum == 1)
+//				{
+//					(registerFrame[0x10].U16) = 8; // Z-go place
+//					Goal = shelvePos[place[5-j]-1];
+//				}
+//			}
+//		}
+//	////End Jog//
+//		else if(registerFrame[0x10].U16 == 8 && j == 0)
+//		{
+//			(registerFrame[0x10].U16 = 0); // End Jogs
+//		}
+//	//End point & Home//
+//		else if(flagPID && (registerFrame[0x10].U16 == 2 || registerFrame[0x10].U16 == 16))
+//		{
+//			//finish point & home mode
+//			static uint64_t Timestamp = 0;
+//			if(jj == 0){
+//				Timestamp = HAL_GetTick() + 1000; //delay
+//				jj = 1;
+//			}
+//			else if(HAL_GetTick() >= Timestamp)
+//			{
+//				registerFrame[0x10].U16 = 0; // finish point & home mode
+//				jj = 0;
+//			}
+//		}
+//
+//	}
+//void OrderSeparate(void)
+//{
+//j = 0;
+//////// Convert to string
+//for(uint16_t i = 10000;i>=1;i/=10)
+//{
+//if(orderPick/i <= 0 || orderPick/i > 5 || orderPlace/i <= 0 || orderPlace/i > 5) // check if 0 or > 5
+//{
+//j = 0;
+//mode = 100;
+//break;
+//}
+//pick[j] = orderPick/i; // use this for pick
+//place[j] = orderPlace/i; // use this for place
+//orderPick = orderPick%i;
+//orderPlace = orderPlace%i;
+//j++;
+//}
+//}
 
 
 /* 	@User : Move motor
@@ -1121,13 +1129,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 }
 /* USER CODE END 4 */
 
-
 /**
   * @brief  This function is executed in case of error occurrence.
   * @retval None
   */
 void Error_Handler(void)
 {
+  /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
   while (1)

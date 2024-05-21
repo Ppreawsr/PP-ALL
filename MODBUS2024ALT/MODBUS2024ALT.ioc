@@ -40,6 +40,7 @@ Dma.USART2_TX.0.SyncPolarity=HAL_DMAMUX_SYNC_NO_EVENT
 Dma.USART2_TX.0.SyncRequestNumber=1
 Dma.USART2_TX.0.SyncSignalID=NONE
 File.Version=6
+GPIO.groupedBy=Group By Peripherals
 KeepUserPlacement=false
 Mcu.CPN=STM32G474RET6
 Mcu.Family=STM32G4
