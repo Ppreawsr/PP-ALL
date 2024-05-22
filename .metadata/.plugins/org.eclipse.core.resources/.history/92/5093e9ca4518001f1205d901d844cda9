@@ -106,7 +106,6 @@ float velocity;
 float position;
 double startTime;
 uint16_t Mode = 0;
-uint16_t St;
 uint16_t Home = 0;
 //uint64_t _micros = 0;
 int16_t Vfeedback = 0;
@@ -237,13 +236,10 @@ int main(void)
     /* USER CODE BEGIN 3 */
 
 
-	  if ( St == 1)
+	  if (qeirawread <= (8192*5))
 	  {
-		  if (qeirawread <= (8192*5))
-		  	  {
-		  		  __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 65535);
-		  		  __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
-		  	  }
+		  __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 65535);
+		  __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
 	  }
 	  //TRAJECTORY
 //	  if (Mode == 1)
@@ -1316,12 +1312,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 		__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
 		zStop = 1;
 	}
-
-	else if(GPIO_Pin == GPIO_PIN_13)
-	{
-		St = 1;
-	}
-
 }
 
 
@@ -1345,7 +1335,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 		qeirawread = getEncoderValue();
 		spd = (qeirawread * 1000) * (60.19/8192);
 		pos += spd;
-		__HAL_TIM_SET_COUNTER(&htim2, 0);
+		__HAL_TIM_SET_COUNTER(&htim4, 0);
 //		i+=1;
 //		generate_Velocity();
 

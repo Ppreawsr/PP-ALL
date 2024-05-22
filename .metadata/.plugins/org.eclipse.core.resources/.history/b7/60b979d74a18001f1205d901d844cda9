@@ -1317,10 +1317,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 		zStop = 1;
 	}
 
-	else if(GPIO_Pin == GPIO_PIN_13)
-	{
-		St = 1;
-	}
 
 }
 

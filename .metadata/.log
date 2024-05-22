@@ -2161,3 +2161,209 @@ org.eclipse.core.runtime.CoreException: Setup exceptions
 
 !ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2024-05-22 20:39:36.405
 !MESSAGE SWV configuration; base: 192000000; minDiv: 16; maxDiv: 65535; maxSWO: 12000000; limit: 2000000 => SWO: 2000000; CPU: 170000000; div: 85
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 5012 2024-05-22 21:09:48.045
+!MESSAGE Error in final launch sequence:
+
+Failed to execute MI command:
+-file-exec-file C:\\Users\\ppreawsr\\OneDrive\\Documents\\GitHub\\PP-ALL\\Main-Controller-master\\MainController\\Debug\\MainController.elf
+Error message from debugger back end:
+"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\Debug\MainController.elf": not in executable format: file format not recognized
+!STACK 1
+org.eclipse.core.runtime.CoreException: Failed to execute MI command:
+-file-exec-file C:\\Users\\ppreawsr\\OneDrive\\Documents\\GitHub\\PP-ALL\\Main-Controller-master\\MainController\\Debug\\MainController.elf
+Error message from debugger back end:
+"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\Debug\MainController.elf": not in executable format: file format not recognized
+	at org.eclipse.cdt.dsf.concurrent.Query.get(Query.java:112)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launchDebugSession(GdbLaunchDelegate.java:252)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launchDebugger(GdbLaunchDelegate.java:109)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launch(GdbLaunchDelegate.java:97)
+	at com.st.stm32cube.ide.mcu.debug.launch.DSFDelegate.launch(DSFDelegate.java:336)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:805)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:716)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:1040)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$1.run(DebugUIPlugin.java:1243)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+Caused by: java.lang.Exception: "C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\Debug\MainController.elf": not in executable format: file format not recognized
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.processMIOutput(AbstractMIControl.java:1024)
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.run(AbstractMIControl.java:853)
+!SUBENTRY 1 org.eclipse.cdt.dsf.gdb 4 10004 2024-05-22 21:09:48.048
+!MESSAGE Failed to execute MI command:
+-file-exec-file C:\\Users\\ppreawsr\\OneDrive\\Documents\\GitHub\\PP-ALL\\Main-Controller-master\\MainController\\Debug\\MainController.elf
+Error message from debugger back end:
+"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\Debug\MainController.elf": not in executable format: file format not recognized
+!STACK 0
+java.lang.Exception: "C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\Debug\MainController.elf": not in executable format: file format not recognized
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.processMIOutput(AbstractMIControl.java:1024)
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.run(AbstractMIControl.java:853)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2024-05-22 21:10:17.001
+!MESSAGE SWV configuration; base: 192000000; minDiv: 16; maxDiv: 65535; maxSWO: 12000000; limit: 2000000 => SWO: 2000000; CPU: 170000000; div: 85
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2024-05-22 21:11:16.419
+!MESSAGE SWV configuration; base: 192000000; minDiv: 16; maxDiv: 65535; maxSWO: 12000000; limit: 2000000 => SWO: 2000000; CPU: 170000000; div: 85
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2024-05-22 21:12:12.739
+!MESSAGE SWV configuration; base: 192000000; minDiv: 16; maxDiv: 65535; maxSWO: 12000000; limit: 2000000 => SWO: 2000000; CPU: 170000000; div: 85
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2024-05-22 21:14:16.243
+!MESSAGE SWV configuration; base: 192000000; minDiv: 16; maxDiv: 65535; maxSWO: 12000000; limit: 2000000 => SWO: 2000000; CPU: 170000000; div: 85
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2024-05-22 21:16:01.801
+!MESSAGE SWV configuration; base: 192000000; minDiv: 16; maxDiv: 65535; maxSWO: 12000000; limit: 2000000 => SWO: 2000000; CPU: 170000000; div: 85
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2024-05-22 21:17:18.501
+!MESSAGE SWV configuration; base: 192000000; minDiv: 16; maxDiv: 65535; maxSWO: 12000000; limit: 2000000 => SWO: 2000000; CPU: 170000000; div: 85
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2024-05-22 21:20:00.066
+!MESSAGE SWV configuration; base: 192000000; minDiv: 16; maxDiv: 65535; maxSWO: 12000000; limit: 2000000 => SWO: 2000000; CPU: 170000000; div: 85
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2024-05-22 21:20:10.132
+!MESSAGE Request for monitor: 'RequestMonitor (com.st.stm32cube.ide.mcu.debug.swv.core.ui.StartTraceHandler$1@13bd6c36): Status ERROR: org.eclipse.cdt.dsf code=10004  children=[Status ERROR: org.eclipse.cdt.dsf.gdb code=10004 Failed to execute MI command:
+ptype position
+Error message from debugger back end:
+No symbol "position" in current context. java.lang.Exception: No symbol "position" in current context. Status ERROR: org.eclipse.cdt.dsf.gdb code=10004 Failed to execute MI command:
+ptype velocity
+Error message from debugger back end:
+No symbol "velocity" in current context. java.lang.Exception: No symbol "velocity" in current context.]' resulted in an error.
+!SUBENTRY 1 org.eclipse.cdt.dsf.gdb 4 10004 2024-05-22 21:20:10.132
+!MESSAGE Failed to execute MI command:
+ptype position
+Error message from debugger back end:
+No symbol "position" in current context.
+!STACK 0
+java.lang.Exception: No symbol "position" in current context.
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.processMIOutput(AbstractMIControl.java:1024)
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.run(AbstractMIControl.java:853)
+!SUBENTRY 1 org.eclipse.cdt.dsf.gdb 4 10004 2024-05-22 21:20:10.132
+!MESSAGE Failed to execute MI command:
+ptype velocity
+Error message from debugger back end:
+No symbol "velocity" in current context.
+!STACK 0
+java.lang.Exception: No symbol "velocity" in current context.
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.processMIOutput(AbstractMIControl.java:1024)
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.run(AbstractMIControl.java:853)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 4 4 2024-05-22 21:20:10.141
+!MESSAGE StartTraceHandler, configuration failure: true
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2024-05-22 21:20:13.780
+!MESSAGE Request for monitor: 'RequestMonitor (com.st.stm32cube.ide.mcu.debug.swv.core.ui.StartTraceHandler$1@6272d41f): Status ERROR: org.eclipse.cdt.dsf code=10004  children=[Status ERROR: org.eclipse.cdt.dsf.gdb code=10004 Failed to execute MI command:
+ptype position
+Error message from debugger back end:
+No symbol "position" in current context. java.lang.Exception: No symbol "position" in current context. Status ERROR: org.eclipse.cdt.dsf.gdb code=10004 Failed to execute MI command:
+ptype velocity
+Error message from debugger back end:
+No symbol "velocity" in current context. java.lang.Exception: No symbol "velocity" in current context.]' resulted in an error.
+!SUBENTRY 1 org.eclipse.cdt.dsf.gdb 4 10004 2024-05-22 21:20:13.780
+!MESSAGE Failed to execute MI command:
+ptype position
+Error message from debugger back end:
+No symbol "position" in current context.
+!STACK 0
+java.lang.Exception: No symbol "position" in current context.
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.processMIOutput(AbstractMIControl.java:1024)
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.run(AbstractMIControl.java:853)
+!SUBENTRY 1 org.eclipse.cdt.dsf.gdb 4 10004 2024-05-22 21:20:13.780
+!MESSAGE Failed to execute MI command:
+ptype velocity
+Error message from debugger back end:
+No symbol "velocity" in current context.
+!STACK 0
+java.lang.Exception: No symbol "velocity" in current context.
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.processMIOutput(AbstractMIControl.java:1024)
+	at org.eclipse.cdt.dsf.mi.service.command.AbstractMIControl$RxThread.run(AbstractMIControl.java:853)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 4 4 2024-05-22 21:20:13.781
+!MESSAGE StartTraceHandler, configuration failure: true
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 4 2024-05-22 21:20:25.522
+!MESSAGE NullPointerException while trying to calculated source lookup path. This can be ignored if it occurs while terminating a debug session. See Bug 500988.
+!STACK 0
+java.lang.NullPointerException: Cannot read the array length because "containers" is null
+	at org.eclipse.cdt.dsf.gdb.launching.GdbSourceLookupDirector.collectSubstitutionsPaths(GdbSourceLookupDirector.java:102)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbSourceLookupDirector.collectSubstitutionsPaths(GdbSourceLookupDirector.java:146)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbSourceLookupDirector.getSubstitutionsPaths(GdbSourceLookupDirector.java:72)
+	at org.eclipse.cdt.dsf.gdb.service.GDBSourceLookup.getSubstitutionsPaths(GDBSourceLookup.java:124)
+	at org.eclipse.cdt.dsf.gdb.service.GDBSourceLookup.sourceContainersChanged(GDBSourceLookup.java:139)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbSourceLookupParticipant.sourceContainersChangedOnDispatchThread(GdbSourceLookupParticipant.java:120)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbSourceLookupParticipant$1.run(GdbSourceLookupParticipant.java:85)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2024-05-22 21:21:19.485
+!MESSAGE SWV configuration; base: 192000000; minDiv: 16; maxDiv: 65535; maxSWO: 12000000; limit: 2000000 => SWO: 2000000; CPU: 170000000; div: 85
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 4 2024-05-22 21:22:52.479
+!MESSAGE NullPointerException while trying to calculated source lookup path. This can be ignored if it occurs while terminating a debug session. See Bug 500988.
+!STACK 0
+java.lang.NullPointerException: Cannot read the array length because "containers" is null
+	at org.eclipse.cdt.dsf.gdb.launching.GdbSourceLookupDirector.collectSubstitutionsPaths(GdbSourceLookupDirector.java:102)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbSourceLookupDirector.collectSubstitutionsPaths(GdbSourceLookupDirector.java:146)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbSourceLookupDirector.getSubstitutionsPaths(GdbSourceLookupDirector.java:72)
+	at org.eclipse.cdt.dsf.gdb.service.GDBSourceLookup.getSubstitutionsPaths(GDBSourceLookup.java:124)
+	at org.eclipse.cdt.dsf.gdb.service.GDBSourceLookup.sourceContainersChanged(GDBSourceLookup.java:139)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbSourceLookupParticipant.sourceContainersChangedOnDispatchThread(GdbSourceLookupParticipant.java:120)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbSourceLookupParticipant$1.run(GdbSourceLookupParticipant.java:85)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 4 2024-05-22 21:23:01.666
+!MESSAGE NullPointerException while trying to calculated source lookup path. This can be ignored if it occurs while terminating a debug session. See Bug 500988.
+!STACK 0
+java.lang.NullPointerException: Cannot read the array length because "containers" is null
+	at org.eclipse.cdt.dsf.gdb.launching.GdbSourceLookupDirector.collectSubstitutionsPaths(GdbSourceLookupDirector.java:102)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbSourceLookupDirector.collectSubstitutionsPaths(GdbSourceLookupDirector.java:146)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbSourceLookupDirector.getSubstitutionsPaths(GdbSourceLookupDirector.java:72)
+	at org.eclipse.cdt.dsf.gdb.service.GDBSourceLookup.getSubstitutionsPaths(GDBSourceLookup.java:124)
+	at org.eclipse.cdt.dsf.gdb.service.GDBSourceLookup.sourceContainersChanged(GDBSourceLookup.java:139)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbSourceLookupParticipant.sourceContainersChangedOnDispatchThread(GdbSourceLookupParticipant.java:120)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbSourceLookupParticipant$1.run(GdbSourceLookupParticipant.java:85)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2024-05-22 21:24:15.396
+!MESSAGE SWV configuration; base: 192000000; minDiv: 16; maxDiv: 65535; maxSWO: 12000000; limit: 2000000 => SWO: 2000000; CPU: 170000000; div: 85
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2024-05-22 21:29:10.417
+!MESSAGE SWV configuration; base: 192000000; minDiv: 16; maxDiv: 65535; maxSWO: 12000000; limit: 2000000 => SWO: 2000000; CPU: 170000000; div: 85
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2024-05-22 21:43:34.566
+!MESSAGE SWV configuration; base: 192000000; minDiv: 16; maxDiv: 65535; maxSWO: 12000000; limit: 2000000 => SWO: 2000000; CPU: 170000000; div: 85
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2024-05-22 21:43:36.422
+!MESSAGE Error - No active DSF-Session. tmpSessionId = 155 (contextManager row 121)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2024-05-22 21:43:36.423
+!MESSAGE Existing sessions are:
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2024-05-22 21:43:36.426
+!MESSAGE Error - No active DSF-Session. tmpSessionId = 155 (contextManager row 121)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2024-05-22 21:43:36.428
+!MESSAGE Existing sessions are:
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2024-05-22 21:52:11.874
+!MESSAGE SWV configuration; base: 192000000; minDiv: 16; maxDiv: 65535; maxSWO: 12000000; limit: 2000000 => SWO: 2000000; CPU: 170000000; div: 85
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2024-05-22 21:52:46.585
+!MESSAGE SWV configuration; base: 192000000; minDiv: 16; maxDiv: 65535; maxSWO: 12000000; limit: 2000000 => SWO: 2000000; CPU: 170000000; div: 85
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2024-05-22 21:54:08.336
+!MESSAGE SWV configuration; base: 192000000; minDiv: 16; maxDiv: 65535; maxSWO: 12000000; limit: 2000000 => SWO: 2000000; CPU: 170000000; div: 85
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.swv 1 1 2024-05-22 21:55:17.525
+!MESSAGE SWV configuration; base: 192000000; minDiv: 16; maxDiv: 65535; maxSWO: 12000000; limit: 2000000 => SWO: 2000000; CPU: 170000000; div: 85

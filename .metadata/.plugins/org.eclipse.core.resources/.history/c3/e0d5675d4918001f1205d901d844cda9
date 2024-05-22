@@ -106,7 +106,6 @@ float velocity;
 float position;
 double startTime;
 uint16_t Mode = 0;
-uint16_t St;
 uint16_t Home = 0;
 //uint64_t _micros = 0;
 int16_t Vfeedback = 0;
@@ -237,7 +236,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 
 
-	  if ( St == 1)
+	  if ( Mode == 1)
 	  {
 		  if (qeirawread <= (8192*5))
 		  	  {
@@ -1317,10 +1316,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 		zStop = 1;
 	}
 
-	else if(GPIO_Pin == GPIO_PIN_13)
-	{
-		St = 1;
-	}
 
 }
 
