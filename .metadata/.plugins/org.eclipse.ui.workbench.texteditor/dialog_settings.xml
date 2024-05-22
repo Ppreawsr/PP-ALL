@@ -1,21 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="round"/>
+		<item key="selection" value="Mode"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="Mode"/>
+			<item value="HomeZ"/>
+			<item value="home"/>
+			<item value="Home"/>
+			<item value="serviceMotor"/>
+			<item value="motor"/>
+			<item value="servicemotoe"/>
+			<item value="qeiRaw"/>
+			<item value="zStop"/>
+			<item value="htim4"/>
+			<item value="piingpong"/>
+			<item value="htim2"/>
 			<item value="round"/>
-			<item value="jj"/>
-			<item value="shelvePos"/>
-			<item value="baseaction"/>
+			<item value="void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)"/>
+			<item value="void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)"/>
 		</list>
 		<list key="replacehistory">
-			<item value="rnd2"/>
+			<item value="htim4"/>
 			<item value="rnd"/>
+			<item value="rnd2"/>
 			<item value="shelfPos"/>
 		</list>
 	</section>
