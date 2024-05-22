@@ -209,8 +209,8 @@ uint8_t extendX(){
 
 uint8_t HomeZ(){
 
-	const uint32_t TimeoutConst = 20000;
-	const uint32_t HomingSpeed = 20000;
+	const uint32_t TimeoutConst = 10000;
+	const uint32_t HomingSpeed = 10000;
 
 	uint32_t Timeout = HAL_GetTick() + TimeoutConst;
 

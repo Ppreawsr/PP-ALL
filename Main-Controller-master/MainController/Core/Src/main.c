@@ -24,6 +24,7 @@
 #include "subroutine.h"
 #include "ModBusRTU.h"
 #include "arm_math.h"
+#include <math.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -105,10 +106,15 @@ float velocity;
 float position;
 double startTime;
 uint16_t Mode = 0;
+uint16_t Home = 0;
 //uint64_t _micros = 0;
 int16_t Vfeedback = 0;
+float VInM = 0;
 arm_pid_instance_f32 PID = {0};
 float qei;
+uint16_t dir;
+float BTempV;
+int pwmM;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -176,9 +182,9 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   ///TRAJECTORY
-  PID.Kp =0.1;
-  PID.Ki =0.00001;
-  PID.Kd = 0.1;
+  PID.Kp = 10.0;
+  PID.Ki = 0.0;
+  PID.Kd = 0.0;
 
   arm_pid_init_f32(&PID, 0);
   // @User: Setup UART 1 for communication with joy stick
@@ -214,8 +220,8 @@ int main(void)
   // TODO: Test subroutine
 //  uint16_t result = retractX();
 //  uint16_t result = extendX();
-  //uint8_t result = HomeZ();
 
+//  uint8_t result = HomeZ();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -231,10 +237,15 @@ int main(void)
 	 		  generate_trapezoidal_velocity_profile(time_op, position_goal);
 	 	  }
 
+//	  if ( Home == 1)
+//	  {
+//		  uint8_t result = HomeZ();
+//	  }
+
 
 
 	  // TODO: Test encoder QEI, remove later
-	  qeiRaw = (__HAL_TIM_GET_COUNTER(&htim2))*(59.19/8192);
+	  qeiRaw = (__HAL_TIM_GET_COUNTER(&htim2))*(60.19/8192);
 
 	  Modbus_Protocal_Worker();
 	  vacuum = registerFrame[0x02].U16;
@@ -956,7 +967,7 @@ static void MX_GPIO_Init(void)
 ///TRAJECTORY
 void generate_trapezoidal_velocity_profile(double t2, double x2) {
   // Total displacement and time interval
-	total_displacement = x2 - position_now;
+	total_displacement = x2 - qeiRaw;
 	total_time = t2;
 
   // Calculate optimal acceleration time (t_acc) - Assume a reasonable value
@@ -968,7 +979,7 @@ void generate_trapezoidal_velocity_profile(double t2, double x2) {
   // Calculate peak velocity
 	Peak = total_displacement / (t_acc + t_const);
 
-	HAL_TIM_Base_Start_IT(&htim2);
+	HAL_TIM_Base_Start_IT(&htim4);
 
 	Mode = 0;
 
@@ -988,23 +999,40 @@ void generate_Velocity()
 
 		        position_now = position;
 
-		        Vfeedback = arm_pid_f32(&PID, position_now - qei);
 
-		        if(Vfeedback < 0)
+		        Vfeedback = arm_pid_f32(&PID, position_now - qeiRaw);
+
+		        BTempV = Vfeedback;
+
+		        VInM = Vfeedback * (24.0/65535.0);
+
+//		        pwmM = Vfeedback * (65535.0/24.0);
+
+
+//		        if (Vfeedback < 9830)
+//		        {
+//		        	Vfeedback = 9830;
+//		        }
+
+		        zStop = 0;
+		        pwmM = Vfeedback * (65535.0/24.0);
+
+		        if(total_displacement >= 0)
 		        {
-		        	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, Vfeedback);
-		        	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0);
+		        	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, pwmM);
+		        	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
+
 		        }
-		        else if(Vfeedback > 0)
+
+		        else if (total_displacement < 0)
 		        {
-		        	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, Vfeedback);
-		        	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, 0);
+//		        	dir = 0;
+//		        	pwmM = (Vfeedback * (65535.0/24.0))*-1;
+		        	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
+		        	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, abs(pwmM));
 		        }
-		        else
-		        {
-		        	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, Vfeedback);
-		        	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, Vfeedback);
-		        }
+
+
 
 //		        qei = PlantSimulation(Vfeeback);
 
@@ -1013,6 +1041,11 @@ void generate_Velocity()
 		        	__HAL_TIM_SET_COUNTER(&htim4, 0);
 		        	HAL_TIM_Base_Stop_IT(&htim4);
 		        	i = 0;
+		        	Vfeedback = 0;
+		        	dir = 0;
+		        	qeiRaw = 0;
+		        	VInM = 0;
+		        	serviceMotor(Vfeedback,dir);
 		        }
 }
 
@@ -1264,11 +1297,7 @@ uint8_t getZStop(){
 
 // @User : Stop motor when hit the end stop
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
-	if(GPIO_Pin == GPIO_PIN_13)
-	{
-		Mode = 1;
-	}
-	else if(GPIO_Pin == GPIO_PIN_5 || GPIO_Pin == GPIO_PIN_10){
+	if(GPIO_Pin == GPIO_PIN_5 || GPIO_Pin == GPIO_PIN_10){
 		__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
 		__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
 		zStop = 1;
