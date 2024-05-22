@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "subroutine.h"
 #include "ModBusRTU.h"
+#include "arm_math.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,6 +45,7 @@
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
+TIM_HandleTypeDef htim4;
 TIM_HandleTypeDef htim5;
 TIM_HandleTypeDef htim16;
 DMA_HandleTypeDef hdma_tim3_ch2;
@@ -60,7 +62,7 @@ DMA_HandleTypeDef hdma_usart2_tx;
 uint8_t joystickPayload[10] = {0};
 
 // @User: Encoder's raw angle from QEI
-uint32_t qeiRaw = 0;
+float qeiRaw = 0;
 
 // @User: Base system receiving buffer
 
@@ -85,7 +87,28 @@ uint16_t temPick; // temporary shelves order
 uint16_t temPlace;
 uint16_t pick[5]; // shelves order array
 uint16_t place[5];
-uint8_t round; // jog counter
+uint8_t rnd; // jog counter
+
+///*Trajectory PART
+double time_op = 2;    // stop time in seconds
+double position_goal = 600;   // stop position in meters
+double position_now = 0;
+double total_displacement = 0;
+double total_time = 0;
+double t_acc =0;
+double t_const = 0;
+double Peak = 0;
+uint64_t i = 0;
+int num_points = 2000;
+double t = 0;
+float velocity;
+float position;
+double startTime;
+uint16_t Mode = 0;
+//uint64_t _micros = 0;
+int16_t Vfeedback = 0;
+arm_pid_instance_f32 PID = {0};
+float qei;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -99,10 +122,12 @@ static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM5_Init(void);
 static void MX_TIM16_Init(void);
+static void MX_TIM4_Init(void);
 /* USER CODE BEGIN PFP */
 //void BaseAction(void);
 //void OrderSeparate(void);
-
+void generate_trapezoidal_velocity_profile(double t2, double x2);
+float PlantSimulation(float VIn) ;
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -147,8 +172,15 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM5_Init();
   MX_TIM16_Init();
+  MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
 
+  ///TRAJECTORY
+  PID.Kp =0.1;
+  PID.Ki =0.00001;
+  PID.Kd = 0.1;
+
+  arm_pid_init_f32(&PID, 0);
   // @User: Setup UART 1 for communication with joy stick
   HAL_UART_Receive_DMA(&huart1, joystickPayload, 10);
 
@@ -193,11 +225,16 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  //TRAJECTORY
+	  if (Mode == 1)
+	 	  {
+	 		  generate_trapezoidal_velocity_profile(time_op, position_goal);
+	 	  }
 
 
 
 	  // TODO: Test encoder QEI, remove later
-	  qeiRaw = __HAL_TIM_GET_COUNTER(&htim2);
+	  qeiRaw = (__HAL_TIM_GET_COUNTER(&htim2))*(59.19/8192);
 
 	  Modbus_Protocal_Worker();
 	  vacuum = registerFrame[0x02].U16;
@@ -255,28 +292,28 @@ int main(void)
 
  	      temPick = (registerFrame[0x21].U16);
  	      temPlace = (registerFrame[0x22].U16);
- 	      round = 0;
+ 	      rnd = 0;
  	      ////// Convert to string
  	      for(uint16_t i = 10000;i>=1;i/=10)
  	      {
  	    	  if(temPick/i == 0 || temPick/i > 5 || temPlace/i == 0 || temPlace/i > 5) // check if 0 or > 5
  	    	  {
- 	    		  round = 0;
+ 	    		  rnd = 0;
  	    		  break;
  	    	  }
- 	    	  pick[round] = temPick/i; // use this for pick
- 	    	  place[round] = temPlace/i; // use this for place
+ 	    	  pick[rnd] = temPick/i; // use this for pick
+ 	    	  place[rnd] = temPlace/i; // use this for place
  	    	  temPick = temPick%i;
  	    	  temPlace = temPlace%i;
- 	    	  round++;
+ 	    	  rnd++;
  	      }
  	  }
- 	  else if(round > 0) //  run Jog
+ 	  else if(rnd > 0) //  run Jog
  	  {
- 	  		if(registerFrame[0x10].U16 == 0 && round == 5 && gripper == 0 && reed == 1 && vacuum == 0) // first rev
+ 	  		if(registerFrame[0x10].U16 == 0 && rnd == 5 && gripper == 0 && reed == 1 && vacuum == 0) // first rev
  	  		{
  	  			(registerFrame[0x10].U16) = 4; // Z-go pick
- 	  			setPos = shelfPos[pick[5-round]-1];
+ 	  			setPos = shelfPos[pick[5-rnd]-1];
  	  		}
  	  		if((piingpong && registerFrame[0x10].U16 == 8)) // prev mode: place, do pick
  	  		{
@@ -294,11 +331,11 @@ int main(void)
  	  			///////finish place -> move on
  	  			if(gripper == 0 && reed == 1 && vacuum == 0)
  	  			{
- 	  				round--;
- 	  				if(round>0)
+ 	  				rnd--;
+ 	  				if(rnd>0)
  	  				{
  	  					(registerFrame[0x10].U16) = 4; // Z-go pick
- 	  					setPos = shelfPos[pick[5-round]-1];
+ 	  					setPos = shelfPos[pick[5-rnd]-1];
  	  				}
  	  				else
  	  				{
@@ -324,7 +361,7 @@ int main(void)
  	  			if(gripper == 0 && reed == 1 && vacuum == 1)
  	  			{
  	  				(registerFrame[0x10].U16) = 8; // Z-go place
- 	  				setPos = shelfPos[place[5-round]-1];
+ 	  				setPos = shelfPos[place[5-rnd]-1];
  	  			}
  	  		}
 
@@ -588,6 +625,51 @@ static void MX_TIM3_Init(void)
 }
 
 /**
+  * @brief TIM4 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM4_Init(void)
+{
+
+  /* USER CODE BEGIN TIM4_Init 0 */
+
+  /* USER CODE END TIM4_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM4_Init 1 */
+
+  /* USER CODE END TIM4_Init 1 */
+  htim4.Instance = TIM4;
+  htim4.Init.Prescaler = 169;
+  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim4.Init.Period = 999;
+  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM4_Init 2 */
+
+  /* USER CODE END TIM4_Init 2 */
+
+}
+
+/**
   * @brief TIM5 Initialization Function
   * @param None
   * @retval None
@@ -843,13 +925,13 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin : PA10 */
   GPIO_InitStruct.Pin = GPIO_PIN_10;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PB5 */
   GPIO_InitStruct.Pin = GPIO_PIN_5;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PB6 */
@@ -870,6 +952,86 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+///TRAJECTORY
+void generate_trapezoidal_velocity_profile(double t2, double x2) {
+  // Total displacement and time interval
+	total_displacement = x2 - position_now;
+	total_time = t2;
+
+  // Calculate optimal acceleration time (t_acc) - Assume a reasonable value
+	t_acc = total_time / 4;  // This is an assumption; you can adjust it
+
+  // Remaining time for constant velocity phase
+	t_const = total_time - 2 * t_acc;
+
+  // Calculate peak velocity
+	Peak = total_displacement / (t_acc + t_const);
+
+	HAL_TIM_Base_Start_IT(&htim2);
+
+	Mode = 0;
+
+  }
+
+void generate_Velocity()
+{
+	t = (time_op) * i / num_points;
+		        if (t < t_acc) {
+		          velocity = (Peak * (t / t_acc));
+		        } else if (t >= t_acc && t <+ t_acc + t_const) {
+		          velocity = Peak;
+		        } else {
+		          velocity = (Peak * ((time_op - t) / t_acc));
+		        }
+		        position += velocity/1000.0;
+
+		        position_now = position;
+
+		        Vfeedback = arm_pid_f32(&PID, position_now - qei);
+
+		        if(Vfeedback < 0)
+		        {
+		        	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, Vfeedback);
+		        	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 0);
+		        }
+		        else if(Vfeedback > 0)
+		        {
+		        	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, Vfeedback);
+		        	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, 0);
+		        }
+		        else
+		        {
+		        	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, Vfeedback);
+		        	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, Vfeedback);
+		        }
+
+//		        qei = PlantSimulation(Vfeeback);
+
+		        if ( i >= time_op*1000)
+		        {
+		        	__HAL_TIM_SET_COUNTER(&htim4, 0);
+		        	HAL_TIM_Base_Stop_IT(&htim4);
+		        	i = 0;
+		        }
+}
+
+float PlantSimulation(float VIn) // run with fix frequency
+{
+static float speed =0;
+static float qei =0;
+float current= VIn - speed * 0.0123;
+float torque = current * 0.456;
+float acc = torque * 0.789;
+speed += acc;
+qei += speed;
+return qei;
+}
+
+//uint64_t micros()
+//{
+//return __HAL_TIM_GET_COUNTER(&htim2)+_micros;
+//}
 //void BaseAction(void){
 //
 //	///// vacuum & gripper ////////////////
@@ -1102,7 +1264,11 @@ uint8_t getZStop(){
 
 // @User : Stop motor when hit the end stop
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
-	if(GPIO_Pin == GPIO_PIN_5 || GPIO_Pin == GPIO_PIN_10){
+	if(GPIO_Pin == GPIO_PIN_13)
+	{
+		Mode = 1;
+	}
+	else if(GPIO_Pin == GPIO_PIN_5 || GPIO_Pin == GPIO_PIN_10){
 		__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 0);
 		__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 0);
 		zStop = 1;
@@ -1124,6 +1290,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	if(htim == &htim5)
 	{
 		registerFrame[0x00].U16 = 22881; //send "Ya"
+	}
+	if(htim == &htim4)
+	{
+		i+=1;
+		generate_Velocity();
+
 	}
 
 }

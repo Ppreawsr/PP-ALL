@@ -1,21 +1,10 @@
-15:55:07 **** Incremental Build of configuration Debug for project MainController ****
+16:34:34 **** Incremental Build of configuration Debug for project MainController ****
 make -j8 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32G474xx -c -I../Core/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc -I../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-../Core/Src/main.c:88:9: warning: built-in function 'round' declared as non-function [-Wbuiltin-declaration-mismatch]
-   88 | uint8_t round; // jog counter
-      |         ^~~~~
-arm-none-eabi-gcc -o "MainController.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\ppreawsr\OneDrive\Documents\GitHub\PP-ALL\Main-Controller-master\MainController\STM32G474RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MainController.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: MainController.elf has a LOAD segment with RWX permissions
-Finished building target: MainController.elf
- 
 arm-none-eabi-size  MainController.elf 
-arm-none-eabi-objdump -h -S MainController.elf  > "MainController.list"
    text	   data	    bss	    dec	    hex	filename
-  33228	    532	   5100	  38860	   97cc	MainController.elf
+  37240	    552	   5424	  43216	   a8d0	MainController.elf
 Finished building: default.size.stdout
  
-Finished building: MainController.list
- 
 
-15:55:08 Build Finished. 0 errors, 2 warnings. (took 1s.171ms)
+16:34:35 Build Finished. 0 errors, 0 warnings. (took 557ms)
 
