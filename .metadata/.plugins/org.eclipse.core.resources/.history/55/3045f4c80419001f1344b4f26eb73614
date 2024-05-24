@@ -145,7 +145,6 @@ static void MX_TIM4_Init(void);
 void BaseAction();
 void generate_trapezoidal_velocity_profile(double t2, double x2);
 float PlantSimulation(float VIn) ;
-void OrderSeparate;
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -917,7 +916,7 @@ void BaseAction(void){
 	  		(registerFrame[0x01].U16) = 0; //reset status
 	  		(registerFrame[0x10].U16) = 2; //Z-home
 
-	  		piingpong = shelfPos[0]; // set goal to home
+	  		piingpong = shelvePos[0]; // set goal to home
 	  	}
 	/////point mode
 		else if((registerFrame[0x01].U16) == 8)
@@ -929,7 +928,7 @@ void BaseAction(void){
 		}
 	/////jog mode
 	  //read (convert to array)
-		else if((registerFrame[0x01].U16 ==4)){
+		{
 			(registerFrame[0x01].U16) = 0; //reset status
 
 			temPick = (registerFrame[0x21].U16);
@@ -943,7 +942,7 @@ void BaseAction(void){
 			{
 				mode = 0; // for debug
 				(registerFrame[0x10].U16) = 4; // Z-go pick
-				Goal = shelfPos[pick[5-rnd]-1];
+				Goal = shelvePos[pick[5-rnd]-1];
 			}
 			if((flagPID && registerFrame[0x10].U16 == 8)) // prev mode: place, do pick
 			{
@@ -969,7 +968,7 @@ void BaseAction(void){
 					if(rnd>0)
 					{
 						(registerFrame[0x10].U16) = 4; // Z-go pick
-						Goal = shelfPos[pick[5-rnd]-1];
+						Goal = shelvePos[pick[5-rnd]-1];
 					}
 				}
 			}
@@ -995,49 +994,10 @@ void BaseAction(void){
 				if(gripper == 0 && reed == 1 && vacuum == 1)
 				{
 					(registerFrame[0x10].U16) = 8; // Z-go place
-					Goal = shelfPos[place[5-rnd]-1];
+					Goal = shelvePos[place[5-rnd]-1];
 				}
 			}
 		}
-	//end jog
-		else if(registerFrame[0x10].U16 == 8 && j == 0)
-		{
-			(registerFrame[0x10].U16 = 0); // End Jogs
-		}
-	/////End point & Home
-		else if(flagPID && (registerFrame[0x10].U16 == 2 || registerFrame[0x10].U16 == 16))
-		{
-			//finish point & home mode
-			static uint64_t Timestamp = 0;
-			if(rnd2 == 0){
-				Timestamp = HAL_GetTick() + 1000; //delay
-				rnd2 = 1;
-			}
-			else if(HAL_GetTick() >= Timestamp)
-			{
-				registerFrame[0x10].U16 = 0; // finish point & home mode
-				rnd2 = 0;
-			}
-		}
-}
-void OrderSeparate(void)
-{
-	rnd = 0;
-	////// Convert to string
-	for(uint16_t p = 10000;p>=1;p/=10)
-	{
-		if(temPick/p <= 0 || temPick/p > 5 || temPlace/p <= 0 || temPlace/p > 5) // check if 0 or > 5
-		{
-			rnd = 0;
-			mode = 100;
-			break;
-		}
-		pick[rnd] = temPick/p; // use this for pick
-		place[rnd] = temPlace/p; // use this for place
-		temPick = temPick%p;
-		temPlace = temPlace%p;
-		rnd++;
-	}
 }
 void generate_Velocity()
 {

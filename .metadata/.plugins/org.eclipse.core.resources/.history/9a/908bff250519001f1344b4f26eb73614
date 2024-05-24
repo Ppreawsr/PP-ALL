@@ -145,7 +145,6 @@ static void MX_TIM4_Init(void);
 void BaseAction();
 void generate_trapezoidal_velocity_profile(double t2, double x2);
 float PlantSimulation(float VIn) ;
-void OrderSeparate;
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
