@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="void write"/>
+		<item key="selection" value="piingpong"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="piingpongPID"/>
+			<item value="flagPID"/>
+			<item value="flag"/>
+			<item value="Goal"/>
+			<item value="begin 3"/>
+			<item value="begin3"/>
+			<item value="baseaction"/>
 			<item value="void Write"/>
 			<item value="Write"/>
 			<item value="SPITx "/>
@@ -16,15 +23,10 @@
 			<item value="orderPlace"/>
 			<item value="jj"/>
 			<item value="shelvePos"/>
-			<item value="rnf"/>
-			<item value="j"/>
-			<item value="BEGIN 4"/>
-			<item value="4"/>
-			<item value="Mode"/>
-			<item value="HomeZ"/>
-			<item value="home"/>
 		</list>
 		<list key="replacehistory">
+			<item value="piingpong"/>
+			<item value="setPos"/>
 			<item value="temPick"/>
 			<item value="temPlace"/>
 			<item value="rnd2"/>
@@ -35,8 +37,8 @@
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="628"/>
-		<item key="DIALOG_Y_ORIGIN" value="433"/>
+		<item key="DIALOG_X_ORIGIN" value="1217"/>
+		<item key="DIALOG_Y_ORIGIN" value="380"/>
 		<item key="DIALOG_WIDTH" value="414"/>
 		<item key="DIALOG_HEIGHT" value="238"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
