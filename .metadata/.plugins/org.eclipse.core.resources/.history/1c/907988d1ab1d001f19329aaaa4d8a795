@@ -951,12 +951,14 @@ void BaseAction(void){
 			//run
 			else if(rnd > 0)
 			{
-				//first round
 			if(registerFrame[0x10].U16 == 0 && rnd== 5 && gripper == 0 && reed == 1 && vacuum == 0) // first rev
 				{
-				mode = 9; // for debug - pick
-				(registerFrame[0x10].U16) = 4; // Z-go pick
-				setPos = shelfPos[pick[5-rnd]-1];
+				mode = 9; // for debug
+				if(reed == 1){ /// gripper back
+					(registerFrame[0x10].U16) = 4; // Z-go pick
+					setPos = shelfPos[pick[5-rnd]-1];
+
+					}
 				}
 			if((piingpong && registerFrame[0x10].U16 == 8)) // prev mode: pick, do place
 				{
@@ -999,21 +1001,21 @@ void BaseAction(void){
 				{
 				//////pick up
 				if(mode == 9){
-					timestamp1 = HAL_GetTick() + 50; // 0.05 sec delay
-					//mode = 90;
+					timestamp1 = HAL_GetTick() + 50; // 0.5 sec delay
+					mode = 90;
 					}
 				if(reed == 1 && gripper == 0 && vacuum == 0 && HAL_GetTick() >= timestamp1)
 					{
 					//registerFrame[0x02].U16 = 1; //vacuum on
 					timestamp2 = HAL_GetTick() + 100;
 					registerFrame[0x03].U16 = 1; //gripper forward
-					//mode = 91;
+					mode = 91;
 					}
 				else if(gripper == 1 && vacuum == 0 && HAL_GetTick() >= timestamp2) //if vacuum off
 					{
 					registerFrame[0x02].U16 = 1; //vacuum on
 					timestamp3 = HAL_GetTick() + 400;
-					//mode = 92;
+					mode = 92;
 
 					}
 				else if(reed == 2 && gripper == 1 && vacuum == 1 && HAL_GetTick() >= timestamp3)
@@ -1021,7 +1023,7 @@ void BaseAction(void){
 					registerFrame[0x03].U16 = 0; //gripper backward
 					load = 1;
 					timestamp4 = HAL_GetTick() + 200;
-					//mode = 93;
+					mode = 93;
 					}
 				///////finish pick -> move on
 				if(gripper == 0 && reed == 1 && vacuum == 1 && HAL_GetTick() >= timestamp4)
@@ -1033,7 +1035,7 @@ void BaseAction(void){
 					else{
 						setPos = shelfPos[place[5-rnd]-1] + 100; // goal + 5mm
 					}
-					//mode = 6;
+					mode = 6;
 					}
 				}
 			}
